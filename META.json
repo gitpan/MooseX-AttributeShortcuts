@@ -23,8 +23,9 @@
          "requires" : {
             "Moose" : 0,
             "Moose::Exporter" : 0,
-            "Moose::Role" : 0,
             "Moose::Util::MetaRole" : 0,
+            "MooseX::Role::Parameterized" : 0,
+            "MooseX::Types::Common::String" : 0,
             "namespace::autoclean" : 0,
             "perl" : "5.006"
          }
@@ -46,13 +47,14 @@
       "bugtracker" : {
          "web" : "https://github.com/RsrchBoy/moosex-attributeshortcuts/issues"
       },
+      "homepage" : "http://search.cpan.org/dist/MooseX-AttributeShortcuts/",
       "repository" : {
          "type" : "git",
          "url" : "git://github.com/RsrchBoy/moosex-attributeshortcuts.git",
          "web" : "https://github.com/RsrchBoy/moosex-attributeshortcuts"
       }
    },
-   "version" : "0.001",
+   "version" : "0.002",
    "x_Dist_Zilla" : {
       "plugins" : [
          {

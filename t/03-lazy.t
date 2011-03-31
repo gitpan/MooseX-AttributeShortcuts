@@ -8,10 +8,7 @@ use warnings;
     use namespace::autoclean;
     use MooseX::AttributeShortcuts;
 
-    has foo => (is => 'rwp');
-    has bar => (is => 'ro', builder => 1);
-    has baz => (is => 'rwp', builder => 1);
-
+    has foo => (is => 'lazy');
 }
 
 use Test::More;
@@ -19,7 +16,15 @@ use Test::Moose;
 
 require 't/funcs.pm' unless eval { require funcs };
 
-test_class('TestClass');
+my %accessors = (
+    reader   => 'foo',
+    init_arg => undef,
+    lazy     => 1,
+    builder  => '_build_foo',
+);
+
+test_class_sanity_checks('TestClass');
+check_attribute('TestClass', foo => %accessors);
 
 done_testing;
 

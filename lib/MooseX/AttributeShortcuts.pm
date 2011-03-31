@@ -12,7 +12,7 @@ BEGIN {
   $MooseX::AttributeShortcuts::AUTHORITY = 'cpan:RSRCHBOY';
 }
 BEGIN {
-  $MooseX::AttributeShortcuts::VERSION = '0.001';
+  $MooseX::AttributeShortcuts::VERSION = '0.002';
 }
 
 # ABSTRACT: Shorthand for common attribute options
@@ -32,43 +32,78 @@ BEGIN {
   $MooseX::AttributeShortcuts::Trait::Attribute::AUTHORITY = 'cpan:RSRCHBOY';
 }
 BEGIN {
-  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.001';
+  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.002';
 }
     use namespace::autoclean;
-    use Moose::Role;
+    use MooseX::Role::Parameterized;
 
-    # here we wrap _process_options() instead of the newer _process_is_option(),
-    # as that makes our life easier from a 1.x/2.x compatibility perspective.
+    use MooseX::Types::Common::String ':all';
 
-    before _process_options => sub {
-        my ($class, $name, $options) = @_;
+    parameter writer_prefix  => (isa => NonEmptySimpleStr, default => '_set_');
+    parameter builder_prefix => (isa => NonEmptySimpleStr, default => '_build_');
 
-        if ($options->{is} eq 'rwp') {
+    role {
+        my $p = shift @_;
 
-            $options->{is}     = 'ro';
-            $options->{writer} = "_$name";
-        }
+        my $wprefix = $p->writer_prefix;
+        my $bprefix = $p->builder_prefix;
 
-        if (defined $options->{builder} && $options->{builder} eq '1') {
+        # here we wrap _process_options() instead of the newer _process_is_option(),
+        # as that makes our life easier from a 1.x/2.x compatibility perspective.
 
-            $options->{builder} = "_build_$name";
-        }
+        before _process_options => sub {
+            my ($class, $name, $options) = @_;
 
-        return;
-    }
+            if ($options->{is} eq 'rwp') {
 
+                $options->{is}     = 'ro';
+                $options->{writer} = "$wprefix$name";
+            }
+
+            if ($options->{is} eq 'lazy') {
+
+                $options->{is}       = 'ro';
+                $options->{lazy}     = 1;
+                $options->{builder}  = "$bprefix$name" unless exists $options->{builder};
+                $options->{init_arg} = undef           unless exists $options->{init_arg};
+            }
+
+            if (defined $options->{builder} && $options->{builder} eq '1') {
+
+                $options->{builder} = "$bprefix$name";
+            }
+
+            return;
+        };
+    };
 }
 
 Moose::Exporter->setup_import_methods;
+my ($import) = Moose::Exporter->build_import_methods;
+
+my $role_params;
+
+sub import {
+    my ($class, %args) = @_;
+
+    $role_params = {};
+    do { $role_params->{$_} = delete $args{"-$_"} if exists $args{"-$_"} }
+        for qw{ writer_prefix builder_prefix };
+
+    @_ = ($class, %args);
+    goto &$import;
+}
 
 sub init_meta {
     shift;
     my %args = @_;
+    my $params = delete $args{role_params} || $role_params || {};
+    undef $role_params;
 
     Moose::Util::MetaRole::apply_metaroles(
         for => $args{for_class},
         class_metaroles => {
-            attribute => [ 'MooseX::AttributeShortcuts::Trait::Attribute'],
+            attribute => [ 'MooseX::AttributeShortcuts::Trait::Attribute' => $params ],
         },
     );
 
@@ -87,7 +122,7 @@ MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 SYNOPSIS
 
@@ -96,23 +131,53 @@ version 0.001
     use Moose;
     use MooseX::AttributeShortcuts;
 
-    # same as: is => 'ro', writer => '_foo'
+    # same as: is => 'ro', writer => '_set_foo'
     has foo => (is => 'rwp');
 
     # same as: is => 'ro', builder => '_build_bar'
     has bar => (is => 'ro', builder => 1);
 
+    # or...
+    package Some::Other::Class;
+
+    use Moose;
+    use MooseX::AttributeShortcuts -writer_prefix => '_';
+
+    # same as: is => 'ro', writer => '_foo'
+    has foo => (is => 'rwp');
+
 =head1 DESCRIPTION
 
 Ever find yourself repeatedly specifing writers and builders, because there's
 no good shortcut to specifying them?  Sometimes you want an attribute to have
-a ro public interface, but a private writer.  And wouldn't it be easier to
-just say "builder => 1" and have the attribute construct the canonical
+a read-only public interface, but a private writer.  And wouldn't it be easier
+to just say "builder => 1" and have the attribute construct the canonical
 "_build_$name" builder name for you?
 
 This package causes an attribute trait to be applied to all attributes defined
 to the using class.  This trait extends the attribute option processing to
 handle the above variations.
+
+=head1 USAGE
+
+We accept two parameters on the use of this module; they impact how builders
+and writers are named.
+
+=head2 -writer_prefix
+
+    use MooseX::::AttributeShortcuts -writer_prefix => 'prefix';
+
+The default writer prefix is '_set_'.  If you'd prefer it to be something
+else (say, '_'), this is where you'd do that.
+
+B<NOTE:> If you're using 0.001, this is a change.  Sorry about that :\
+
+=head2 -builder_prefix
+
+    use MooseX::::AttributeShortcuts -builder_prefix => 'prefix';
+
+The default builder prefix is '_build_', as this is what lazy_build does, and
+what people in general recognize as build methods.
 
 =head1 NEW ATTRIBUTE OPTIONS
 
@@ -122,14 +187,24 @@ L<Class::MOP::Attribute> remain unchanged.
 Want to see additional options?  Ask, or better yet, fork on GitHub and send
 a pull request.
 
-For the following, "$name" should be read as the attribute name.
+For the following, "$name" should be read as the attribute name; and the
+various prefixes should be read using the defaults.
 
 =head2 is => 'rwp'
 
 Specifing is => 'rwp' will cause the following options to be set:
 
     is     => 'ro'
-    writer => "_$name"
+    writer => "_set_$name"
+
+=head2 is => 'lazy'
+
+Specifing is => 'lazy' will cause the following options to be set:
+
+    is       => 'ro'
+    builder  => "_build_$name"
+    init_arg => undef
+    lazy     => 1
 
 =head2 builder => 1
 

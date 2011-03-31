@@ -22,14 +22,16 @@ name: MooseX-AttributeShortcuts
 requires:
   Moose: 0
   Moose::Exporter: 0
-  Moose::Role: 0
   Moose::Util::MetaRole: 0
+  MooseX::Role::Parameterized: 0
+  MooseX::Types::Common::String: 0
   namespace::autoclean: 0
   perl: 5.006
 resources:
   bugtracker: https://github.com/RsrchBoy/moosex-attributeshortcuts/issues
+  homepage: http://search.cpan.org/dist/MooseX-AttributeShortcuts/
   repository: git://github.com/RsrchBoy/moosex-attributeshortcuts.git
-version: 0.001
+version: 0.002
 x_Dist_Zilla:
   plugins:
     -

@@ -12,6 +12,9 @@ t/00-compile.t
 t/00-load.t
 t/000-report-versions.t
 t/01-basic.t
+t/02-parameterized.t
+t/03-lazy.t
+t/funcs.pm
 t/release-consistent-version.t
 t/release-eol.t
 t/release-has-version.t
