@@ -11,9 +11,9 @@ build_requires:
   Test::More: 0.94
   perl: 5.004
 configure_requires:
-  ExtUtils::MakeMaker: 6.31
+  ExtUtils::MakeMaker: 6.30
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 4.200004, CPAN::Meta::Converter version 2.110580'
+generated_by: 'Dist::Zilla version 4.200008, CPAN::Meta::Converter version 2.110930'
 license: lgpl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -25,214 +25,219 @@ requires:
   Moose::Util::MetaRole: 0
   MooseX::Role::Parameterized: 0
   MooseX::Types::Common::String: 0
+  MooseX::Types::Moose: 0
   namespace::autoclean: 0
   perl: 5.006
 resources:
   bugtracker: https://github.com/RsrchBoy/moosex-attributeshortcuts/issues
   homepage: http://search.cpan.org/dist/MooseX-AttributeShortcuts/
   repository: git://github.com/RsrchBoy/moosex-attributeshortcuts.git
-version: 0.002
+version: 0.003
 x_Dist_Zilla:
   plugins:
     -
+      class: Dist::Zilla::Plugin::NextRelease
+      name: '@RSRCHBOY/NextRelease'
+      version: 4.200008
+    -
       class: Dist::Zilla::Plugin::Git::Check
-      name: '@Git/Check'
-      version: 1.110500
+      name: '@RSRCHBOY/@Git/Check'
+      version: 1.111590
     -
       class: Dist::Zilla::Plugin::Git::Commit
-      name: '@Git/Commit'
-      version: 1.110500
+      name: '@RSRCHBOY/@Git/Commit'
+      version: 1.111590
     -
       class: Dist::Zilla::Plugin::Git::Tag
-      name: '@Git/Tag'
-      version: 1.110500
+      name: '@RSRCHBOY/@Git/Tag'
+      version: 1.111590
     -
       class: Dist::Zilla::Plugin::Git::Push
-      name: '@Git/Push'
-      version: 1.110500
+      name: '@RSRCHBOY/@Git/Push'
+      version: 1.111590
     -
       class: Dist::Zilla::Plugin::Git::NextVersion
-      name: Git::NextVersion
-      version: 1.110500
-    -
-      class: Dist::Zilla::Plugin::NextRelease
-      name: NextRelease
-      version: 4.200004
+      name: '@RSRCHBOY/Git::NextVersion'
+      version: 1.111590
     -
       class: Dist::Zilla::Plugin::GatherDir
-      name: GatherDir
-      version: 4.200004
+      name: '@RSRCHBOY/GatherDir'
+      version: 4.200008
     -
       class: Dist::Zilla::Plugin::PruneCruft
-      name: PruneCruft
-      version: 4.200004
+      name: '@RSRCHBOY/PruneCruft'
+      version: 4.200008
     -
       class: Dist::Zilla::Plugin::License
-      name: License
-      version: 4.200004
+      name: '@RSRCHBOY/License'
+      version: 4.200008
     -
       class: Dist::Zilla::Plugin::ExecDir
-      name: ExecDir
-      version: 4.200004
+      name: '@RSRCHBOY/ExecDir'
+      version: 4.200008
     -
       class: Dist::Zilla::Plugin::ShareDir
-      name: ShareDir
-      version: 4.200004
+      name: '@RSRCHBOY/ShareDir'
+      version: 4.200008
     -
       class: Dist::Zilla::Plugin::MakeMaker
-      name: MakeMaker
-      version: 4.200004
+      name: '@RSRCHBOY/MakeMaker'
+      version: 4.200008
     -
       class: Dist::Zilla::Plugin::InstallGuide
-      name: InstallGuide
+      name: '@RSRCHBOY/InstallGuide'
       version: 1.101461
     -
       class: Dist::Zilla::Plugin::Manifest
-      name: Manifest
-      version: 4.200004
+      name: '@RSRCHBOY/Manifest'
+      version: 4.200008
     -
       class: Dist::Zilla::Plugin::PkgVersion
-      name: PkgVersion
-      version: 4.200004
-    -
-      class: Dist::Zilla::Plugin::PodWeaver
-      name: PodWeaver
-      version: 3.101641
+      name: '@RSRCHBOY/PkgVersion'
+      version: 4.200008
     -
       class: Dist::Zilla::Plugin::ReadmeFromPod
-      name: ReadmeFromPod
+      name: '@RSRCHBOY/ReadmeFromPod'
       version: 0.14
     -
       class: Dist::Zilla::Plugin::AutoPrereqs
-      name: AutoPrereqs
-      version: 4.200004
-    -
-      class: Dist::Zilla::Plugin::SynopsisTests
-      name: SynopsisTests
-      version: 1.101420
+      name: '@RSRCHBOY/AutoPrereqs'
+      version: 4.200008
     -
       class: Dist::Zilla::Plugin::ConsistentVersionTest
-      name: ConsistentVersionTest
+      name: '@RSRCHBOY/ConsistentVersionTest'
       version: 0.02
     -
       class: Dist::Zilla::Plugin::PodCoverageTests
-      name: PodCoverageTests
-      version: 4.200004
+      name: '@RSRCHBOY/PodCoverageTests'
+      version: 4.200008
     -
       class: Dist::Zilla::Plugin::PodSyntaxTests
-      name: PodSyntaxTests
-      version: 4.200004
+      name: '@RSRCHBOY/PodSyntaxTests'
+      version: 4.200008
     -
       class: Dist::Zilla::Plugin::NoTabsTests
-      name: NoTabsTests
+      name: '@RSRCHBOY/NoTabsTests'
       version: 0.01
     -
       class: Dist::Zilla::Plugin::EOLTests
-      name: EOLTests
+      name: '@RSRCHBOY/EOLTests'
       version: 0.02
     -
       class: Dist::Zilla::Plugin::CompileTests
-      name: CompileTests
-      version: 1.103030
+      name: '@RSRCHBOY/CompileTests'
+      version: 1.110930
     -
       class: Dist::Zilla::Plugin::HasVersionTests
-      name: HasVersionTests
+      name: '@RSRCHBOY/HasVersionTests'
       version: 1.101420
     -
       class: Dist::Zilla::Plugin::PortabilityTests
-      name: PortabilityTests
-      version: 1.101420
-    -
-      class: Dist::Zilla::Plugin::NoSmartCommentsTests
-      name: NoSmartCommentsTests
-      version: 0.005
+      name: '@RSRCHBOY/PortabilityTests'
+      version: 1.111840
     -
       class: Dist::Zilla::Plugin::ExtraTests
-      name: ExtraTests
-      version: 4.200004
+      name: '@RSRCHBOY/ExtraTests'
+      version: 4.200008
     -
       class: Dist::Zilla::Plugin::MinimumPerl
-      name: MinimumPerl
-      version: 0.02
+      name: '@RSRCHBOY/MinimumPerl'
+      version: 1.003
     -
       class: Dist::Zilla::Plugin::ReportVersions
-      name: ReportVersions
+      name: '@RSRCHBOY/ReportVersions'
       version: 1.110730
     -
       class: Dist::Zilla::Plugin::Prepender
-      name: Prepender
+      name: '@RSRCHBOY/Prepender'
       version: 1.103470
     -
+      class: Dist::Zilla::Plugin::NoSmartCommentsTests
+      name: '@RSRCHBOY/NoSmartCommentsTests'
+      version: 0.006
+    -
       class: Dist::Zilla::Plugin::Authority
-      name: Authority
-      version: 1.004
+      name: '@RSRCHBOY/Authority'
+      version: 1.005
     -
       class: Dist::Zilla::Plugin::MetaConfig
-      name: MetaConfig
-      version: 4.200004
+      name: '@RSRCHBOY/MetaConfig'
+      version: 4.200008
     -
       class: Dist::Zilla::Plugin::MetaJSON
-      name: MetaJSON
-      version: 4.200004
+      name: '@RSRCHBOY/MetaJSON'
+      version: 4.200008
     -
       class: Dist::Zilla::Plugin::MetaYAML
-      name: MetaYAML
-      version: 4.200004
+      name: '@RSRCHBOY/MetaYAML'
+      version: 4.200008
     -
       class: Dist::Zilla::Plugin::TestRelease
-      name: TestRelease
-      version: 4.200004
+      name: '@RSRCHBOY/TestRelease'
+      version: 4.200008
     -
       class: Dist::Zilla::Plugin::ConfirmRelease
-      name: ConfirmRelease
-      version: 4.200004
+      name: '@RSRCHBOY/ConfirmRelease'
+      version: 4.200008
     -
       class: Dist::Zilla::Plugin::UploadToCPAN
-      name: UploadToCPAN
-      version: 4.200004
-    -
-      class: Dist::Zilla::Plugin::ArchiveRelease
-      name: ArchiveRelease
-      version: 3.01
+      name: '@RSRCHBOY/UploadToCPAN'
+      version: 4.200008
     -
       class: Dist::Zilla::Plugin::CheckPrereqsIndexed
-      name: CheckPrereqsIndexed
-      version: 0.002
+      name: '@RSRCHBOY/CheckPrereqsIndexed'
+      version: 0.003
     -
       class: Dist::Zilla::Plugin::GitHub::Meta
-      name: GitHub::Meta
-      version: 0.06
+      name: '@RSRCHBOY/GitHub::Meta'
+      version: 0.10
     -
       class: Dist::Zilla::Plugin::GitHub::Update
-      name: GitHub::Update
-      version: 0.06
+      name: '@RSRCHBOY/GitHub::Update'
+      version: 0.10
+    -
+      class: Dist::Zilla::Plugin::PodWeaver
+      name: '@RSRCHBOY/PodWeaver'
+      version: 3.101641
     -
       class: Dist::Zilla::Plugin::ReadmeAnyFromPod
-      name: ReadmePodInRoot
+      name: '@RSRCHBOY/ReadmePodInRoot'
       version: 0.103522
     -
+      class: Dist::Zilla::Plugin::ArchiveRelease
+      name: '@RSRCHBOY/ArchiveRelease'
+      version: 3.01
+    -
       class: Dist::Zilla::Plugin::InstallRelease
-      name: InstallRelease
-      version: 0.006
+      name: '@RSRCHBOY/InstallRelease'
+      version: 0.007
     -
       class: Dist::Zilla::Plugin::FinderCode
       name: ':InstallModules'
-      version: 4.200004
+      version: 4.200008
+    -
+      class: Dist::Zilla::Plugin::FinderCode
+      name: ':IncModules'
+      version: 4.200008
     -
       class: Dist::Zilla::Plugin::FinderCode
       name: ':TestFiles'
-      version: 4.200004
+      version: 4.200008
     -
       class: Dist::Zilla::Plugin::FinderCode
       name: ':ExecFiles'
-      version: 4.200004
+      version: 4.200008
     -
       class: Dist::Zilla::Plugin::FinderCode
       name: ':ShareFiles'
-      version: 4.200004
+      version: 4.200008
+    -
+      class: Dist::Zilla::Plugin::FinderCode
+      name: ':MainModule'
+      version: 4.200008
   zilla:
     class: Dist::Zilla::Dist::Builder
     config:
       is_trial: 0
-    version: 4.200004
+    version: 4.200008
 x_authority: cpan:RSRCHBOY

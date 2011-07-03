@@ -12,7 +12,7 @@ BEGIN {
   $MooseX::AttributeShortcuts::AUTHORITY = 'cpan:RSRCHBOY';
 }
 BEGIN {
-  $MooseX::AttributeShortcuts::VERSION = '0.002';
+  $MooseX::AttributeShortcuts::VERSION = '0.003';
 }
 
 # ABSTRACT: Shorthand for common attribute options
@@ -32,21 +32,34 @@ BEGIN {
   $MooseX::AttributeShortcuts::Trait::Attribute::AUTHORITY = 'cpan:RSRCHBOY';
 }
 BEGIN {
-  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.002';
+  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.003';
 }
     use namespace::autoclean;
     use MooseX::Role::Parameterized;
 
+    use MooseX::Types::Moose          ':all';
     use MooseX::Types::Common::String ':all';
 
     parameter writer_prefix  => (isa => NonEmptySimpleStr, default => '_set_');
     parameter builder_prefix => (isa => NonEmptySimpleStr, default => '_build_');
+
+    # I'm not going to document the following for the moment, as I'm not sure I
+    # want to do it this way.
+    parameter prefixes => (
+        isa     => HashRef[NonEmptySimpleStr],
+        default => sub { { } },
+    );
 
     role {
         my $p = shift @_;
 
         my $wprefix = $p->writer_prefix;
         my $bprefix = $p->builder_prefix;
+        my %prefix = (
+            predicate => 'has',
+            clearer   => 'clear',
+            %{ $p->prefixes },
+       );
 
         # here we wrap _process_options() instead of the newer _process_is_option(),
         # as that makes our life easier from a 1.x/2.x compatibility perspective.
@@ -68,10 +81,24 @@ BEGIN {
                 $options->{init_arg} = undef           unless exists $options->{init_arg};
             }
 
-            if (defined $options->{builder} && $options->{builder} eq '1') {
+            my $is_private = sub { $name =~ /^_/ ? $_[0] : $_[1] };
+            my $default_for = sub {
+                my ($opt) = @_;
 
-                $options->{builder} = "$bprefix$name";
-            }
+                if ($options->{$opt} && $options->{$opt} eq '1') {
+                    $options->{$opt} =
+                        $is_private->('_', q{}) .
+                        $prefix{$opt} .
+                        $is_private->(q{}, '_') .
+                        $name;
+                }
+                return;
+            };
+
+            ### set our other defaults, if requested...
+            $default_for->($_) for qw{ predicate clearer };
+            $options->{builder} = "$bprefix$name"
+                if $options->{builder} && $options->{builder} eq '1';
 
             return;
         };
@@ -88,7 +115,7 @@ sub import {
 
     $role_params = {};
     do { $role_params->{$_} = delete $args{"-$_"} if exists $args{"-$_"} }
-        for qw{ writer_prefix builder_prefix };
+        for qw{ writer_prefix builder_prefix prefixes };
 
     @_ = ($class, %args);
     goto &$import;
@@ -122,7 +149,7 @@ MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 SYNOPSIS
 
@@ -136,6 +163,15 @@ version 0.002
 
     # same as: is => 'ro', builder => '_build_bar'
     has bar => (is => 'ro', builder => 1);
+
+    # same as: is => 'ro', clearer => 'clear_bar'
+    has bar => (is => 'ro', clearer => 1);
+
+    # same as: is => 'ro', predicate => 'has_bar'
+    has bar => (is => 'ro', predicate => 1);
+
+    # works as you'd expect for "private": predicate => '_has_bar'
+    has _bar => (is => 'ro', predicate => 1);
 
     # or...
     package Some::Other::Class;
@@ -211,6 +247,30 @@ Specifing is => 'lazy' will cause the following options to be set:
 Specifying builder => 1 will cause the following options to be set:
 
     builder => "_build_$name"
+
+=head2 clearer => 1
+
+Specifying clearer => 1 will cause the following options to be set:
+
+    clearer => "clear_$name"
+
+or, if your attribute name begins with an underscore:
+
+    clearer => "_clear$name"
+
+(that is, an attribute named "_foo" would get "_clear_foo")
+
+=head2 predicate => 1
+
+Specifying predicate => 1 will cause the following options to be set:
+
+    predicate => "has_$name"
+
+or, if your attribute name begins with an underscore:
+
+    predicate => "_has$name"
+
+(that is, an attribute named "_foo" would get "_has_foo")
 
 =for Pod::Coverage init_meta
 
