@@ -12,7 +12,7 @@ BEGIN {
   $MooseX::AttributeShortcuts::AUTHORITY = 'cpan:RSRCHBOY';
 }
 BEGIN {
-  $MooseX::AttributeShortcuts::VERSION = '0.003';
+  $MooseX::AttributeShortcuts::VERSION = '0.004';
 }
 
 # ABSTRACT: Shorthand for common attribute options
@@ -32,7 +32,7 @@ BEGIN {
   $MooseX::AttributeShortcuts::Trait::Attribute::AUTHORITY = 'cpan:RSRCHBOY';
 }
 BEGIN {
-  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.003';
+  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.004';
 }
     use namespace::autoclean;
     use MooseX::Role::Parameterized;
@@ -61,24 +61,32 @@ BEGIN {
             %{ $p->prefixes },
        );
 
-        # here we wrap _process_options() instead of the newer _process_is_option(),
-        # as that makes our life easier from a 1.x/2.x compatibility perspective.
-
-        before _process_options => sub {
+        my $_process_options = sub {
             my ($class, $name, $options) = @_;
 
-            if ($options->{is} eq 'rwp') {
+            if ($options->{is}) {
 
-                $options->{is}     = 'ro';
-                $options->{writer} = "$wprefix$name";
+                if ($options->{is} eq 'rwp') {
+
+                    $options->{is}     = 'ro';
+                    $options->{writer} = "$wprefix$name";
+                }
+
+                if ($options->{is} eq 'lazy') {
+
+                    $options->{is}       = 'ro';
+                    $options->{lazy}     = 1;
+                    $options->{builder}  = 1     unless exists $options->{builder};
+                    $options->{init_arg} = undef unless exists $options->{init_arg};
+                }
             }
 
-            if ($options->{is} eq 'lazy') {
+            if ($options->{lazy_build} && $options->{lazy_build} eq 'private') {
 
-                $options->{is}       = 'ro';
-                $options->{lazy}     = 1;
-                $options->{builder}  = "$bprefix$name" unless exists $options->{builder};
-                $options->{init_arg} = undef           unless exists $options->{init_arg};
+                $options->{lazy_build} = 1;
+                $options->{clearer}    = "_clear_$name";
+                $options->{predicate}  = "_has_$name";
+                $options->{init_arg}   = "_$name" unless exists $options->{init_arg};
             }
 
             my $is_private = sub { $name =~ /^_/ ? $_[0] : $_[1] };
@@ -102,11 +110,28 @@ BEGIN {
 
             return;
         };
+
+        # here we wrap _process_options() instead of the newer _process_is_option(),
+        # as that makes our life easier from a 1.x/2.x compatibility perspective.
+
+        before _process_options => $_process_options;
+
+        around clone_and_inherit_options => sub {
+            my ($orig, $self) = (shift, shift);
+
+            my %options = @_;
+            $self->$_process_options($self->name, \%options);
+            return $self->$orig(%options);
+        };
     };
 }
 
 Moose::Exporter->setup_import_methods;
-my ($import) = Moose::Exporter->build_import_methods;
+my ($import) = Moose::Exporter->build_import_methods(
+    trait_aliases => [
+        [ 'MooseX::AttributeShortcuts::Trait::Attribute' => 'Shortcuts' ],
+    ],
+);
 
 my $role_params;
 
@@ -149,7 +174,7 @@ MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 =head1 VERSION
 
-version 0.003
+version 0.004
 
 =head1 SYNOPSIS
 
