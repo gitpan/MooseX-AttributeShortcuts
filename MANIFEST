@@ -16,6 +16,7 @@ t/02-parameterized.t
 t/03-lazy.t
 t/04-clearer-and-predicate.t
 t/05-extend.t
+t/06-role.t
 t/funcs.pm
 t/release-consistent-version.t
 t/release-eol.t

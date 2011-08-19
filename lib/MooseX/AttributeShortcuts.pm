@@ -11,8 +11,8 @@ package MooseX::AttributeShortcuts;
 BEGIN {
   $MooseX::AttributeShortcuts::AUTHORITY = 'cpan:RSRCHBOY';
 }
-BEGIN {
-  $MooseX::AttributeShortcuts::VERSION = '0.004';
+{
+  $MooseX::AttributeShortcuts::VERSION = '0.005';
 }
 
 # ABSTRACT: Shorthand for common attribute options
@@ -31,8 +31,8 @@ use Moose::Util::MetaRole;
 BEGIN {
   $MooseX::AttributeShortcuts::Trait::Attribute::AUTHORITY = 'cpan:RSRCHBOY';
 }
-BEGIN {
-  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.004';
+{
+  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.005';
 }
     use namespace::autoclean;
     use MooseX::Role::Parameterized;
@@ -116,12 +116,17 @@ BEGIN {
 
         before _process_options => $_process_options;
 
-        around clone_and_inherit_options => sub {
-            my ($orig, $self) = (shift, shift);
+        # this feels... bad.  But I'm not sure there's any way to ensure we
+        # process options on a clone/extends without wrapping new().
 
-            my %options = @_;
-            $self->$_process_options($self->name, \%options);
-            return $self->$orig(%options);
+        around new => sub {
+            my ($orig, $self) = (shift, shift);
+            my ($name, %options) = @_;
+
+            $self->$_process_options($name, \%options)
+                if $options{__hack_no_process_options};
+
+            return $self->$orig($name, %options);
         };
     };
 }
@@ -157,6 +162,9 @@ sub init_meta {
         class_metaroles => {
             attribute => [ 'MooseX::AttributeShortcuts::Trait::Attribute' => $params ],
         },
+        role_metaroles => {
+            applied_attribute => [ 'MooseX::AttributeShortcuts::Trait::Attribute' => $params ],
+        },
     );
 
     return $args{for_class}->meta;
@@ -174,7 +182,7 @@ MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 =head1 VERSION
 
-version 0.004
+version 0.005
 
 =head1 SYNOPSIS
 

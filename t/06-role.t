@@ -2,12 +2,14 @@ use strict;
 use warnings;
 
 {
-    package TestClass;
+    package TestRole;
 
-    use Moose;
+    use Moose::Role;
     use namespace::autoclean;
+    use MooseX::AttributeShortcuts;
 
-    has bar => (is => 'ro');
+    has foo => (is => 'rwp');
+    has bar => (is => 'ro', builder => 1);
 }
 {
     package TestClassTwo;
@@ -16,10 +18,8 @@ use warnings;
     use namespace::autoclean;
     use MooseX::AttributeShortcuts;
 
-    extends 'TestClass';
+    with 'TestRole';
 
-    has '+bar' => (traits => [Shortcuts], builder => 1);
-    has foo => (is => 'rwp');
     has baz => (is => 'rwp', builder => 1);
 
 }

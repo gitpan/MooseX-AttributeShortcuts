@@ -15,9 +15,11 @@ my %WriteMakefileArgs = (
     'Carp' => '0',
     'File::Find' => '0',
     'File::Temp' => '0',
+    'Moose::Role' => '0',
     'Scalar::Util' => '0',
     'Test::Moose' => '0',
     'Test::More' => '0.94',
+    'constant' => '0',
     'perl' => '5.004'
   },
   'CONFIGURE_REQUIRES' => {
@@ -36,7 +38,7 @@ my %WriteMakefileArgs = (
     'MooseX::Types::Moose' => '0',
     'namespace::autoclean' => '0'
   },
-  'VERSION' => '0.004',
+  'VERSION' => '0.005',
   'test' => {
     'TESTS' => 't/*.t'
   }

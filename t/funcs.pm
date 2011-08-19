@@ -8,6 +8,8 @@
 #   The GNU Lesser General Public License, Version 2.1, February 1999
 #
 
+use constant Shortcuts => 'MooseX::AttributeShortcuts::Trait::Attribute';
+
 sub test_class {
     my $classname      = shift @_;
     my $writer_prefix  = shift @_ || '_set_';
@@ -36,6 +38,8 @@ sub test_class_sanity_checks {
         'MooseX::AttributeShortcuts::Trait::Attribute',
     );
     has_attribute_ok($classname, $_) for @attributes;
+    ok($classname->meta->get_attribute($_)->does(Shortcuts), "does role: $_")
+        for @attributes;
 
     return;
 }

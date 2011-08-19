@@ -2,7 +2,7 @@ NAME
     MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 VERSION
-    version 0.004
+    version 0.005
 
 SYNOPSIS
         package Some::Class;
