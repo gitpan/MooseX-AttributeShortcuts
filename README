@@ -2,7 +2,7 @@ NAME
     MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 VERSION
-    version 0.005
+    version 0.006
 
 SYNOPSIS
         package Some::Class;
@@ -113,6 +113,23 @@ NEW ATTRIBUTE OPTIONS
         predicate => "_has$name"
 
     (that is, an attribute named "_foo" would get "_has_foo")
+
+  trigger => 1
+    Specifying trigger => 1 will cause the attribute to be created with a
+    trigger that calls a named method in the class with the options passed
+    to the trigger. By default, the method name the trigger calls is the
+    name of the attribute prefixed with "_trigger_".
+
+    e.g., for an attribute named "foo" this would be equivalent to:
+
+        trigger => sub { shift->_trigger_foo(@_) }
+
+    For an attribute named "_foo":
+
+        trigger => sub { shift->_trigger__foo(@_) }
+
+    This naming scheme, in which the trigger is always private, is the same
+    as the builder naming scheme (just with a different prefix).
 
 BUGS
     All complex software has bugs lurking in it, and this module is no

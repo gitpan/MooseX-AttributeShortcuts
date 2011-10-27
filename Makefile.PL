@@ -9,38 +9,37 @@ use ExtUtils::MakeMaker 6.30;
 
 
 my %WriteMakefileArgs = (
-  'ABSTRACT' => 'Shorthand for common attribute options',
-  'AUTHOR' => 'Chris Weyl <cweyl@alumni.drew.edu>',
-  'BUILD_REQUIRES' => {
-    'Carp' => '0',
-    'File::Find' => '0',
-    'File::Temp' => '0',
-    'Moose::Role' => '0',
-    'Scalar::Util' => '0',
-    'Test::Moose' => '0',
-    'Test::More' => '0.94',
-    'constant' => '0',
-    'perl' => '5.004'
+  "ABSTRACT" => "Shorthand for common attribute options",
+  "AUTHOR" => "Chris Weyl <cweyl\@alumni.drew.edu>",
+  "BUILD_REQUIRES" => {
+    "File::Find" => 0,
+    "File::Temp" => 0,
+    "Moose::Role" => 0,
+    "Test::Moose" => 0,
+    "Test::More" => "0.88",
+    "constant" => 0
   },
-  'CONFIGURE_REQUIRES' => {
-    'ExtUtils::MakeMaker' => '6.30'
+  "CONFIGURE_REQUIRES" => {
+    "ExtUtils::MakeMaker" => "6.30"
   },
-  'DISTNAME' => 'MooseX-AttributeShortcuts',
-  'EXE_FILES' => [],
-  'LICENSE' => 'lgpl',
-  'NAME' => 'MooseX::AttributeShortcuts',
-  'PREREQ_PM' => {
-    'Moose' => '0',
-    'Moose::Exporter' => '0',
-    'Moose::Util::MetaRole' => '0',
-    'MooseX::Role::Parameterized' => '0',
-    'MooseX::Types::Common::String' => '0',
-    'MooseX::Types::Moose' => '0',
-    'namespace::autoclean' => '0'
+  "DISTNAME" => "MooseX-AttributeShortcuts",
+  "EXE_FILES" => [],
+  "LICENSE" => "lgpl",
+  "NAME" => "MooseX::AttributeShortcuts",
+  "PREREQ_PM" => {
+    "Moose" => 0,
+    "Moose::Exporter" => 0,
+    "Moose::Util::MetaRole" => 0,
+    "MooseX::Role::Parameterized" => 0,
+    "MooseX::Types::Common::String" => 0,
+    "MooseX::Types::Moose" => 0,
+    "namespace::autoclean" => 0,
+    "strict" => 0,
+    "warnings" => 0
   },
-  'VERSION' => '0.005',
-  'test' => {
-    'TESTS' => 't/*.t'
+  "VERSION" => "0.006",
+  "test" => {
+    "TESTS" => "t/*.t"
   }
 );
 

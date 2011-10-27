@@ -8,11 +8,8 @@
 #   The GNU Lesser General Public License, Version 2.1, February 1999
 #
 package MooseX::AttributeShortcuts;
-BEGIN {
-  $MooseX::AttributeShortcuts::AUTHORITY = 'cpan:RSRCHBOY';
-}
 {
-  $MooseX::AttributeShortcuts::VERSION = '0.005';
+  $MooseX::AttributeShortcuts::VERSION = '0.006';
 }
 
 # ABSTRACT: Shorthand for common attribute options
@@ -28,11 +25,8 @@ use Moose::Util::MetaRole;
 
 {
     package MooseX::AttributeShortcuts::Trait::Attribute;
-BEGIN {
-  $MooseX::AttributeShortcuts::Trait::Attribute::AUTHORITY = 'cpan:RSRCHBOY';
-}
 {
-  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.005';
+  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.006';
 }
     use namespace::autoclean;
     use MooseX::Role::Parameterized;
@@ -58,6 +52,7 @@ BEGIN {
         my %prefix = (
             predicate => 'has',
             clearer   => 'clear',
+            trigger   => '_trigger_',
             %{ $p->prefixes },
        );
 
@@ -107,6 +102,9 @@ BEGIN {
             $default_for->($_) for qw{ predicate clearer };
             $options->{builder} = "$bprefix$name"
                 if $options->{builder} && $options->{builder} eq '1';
+            my $trigger = "$prefix{trigger}$name";
+            $options->{trigger} = sub { shift->$trigger(@_) }
+                if $options->{trigger} && $options->{trigger} eq '1';
 
             return;
         };
@@ -182,7 +180,7 @@ MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
 =head1 SYNOPSIS
 
@@ -304,6 +302,24 @@ or, if your attribute name begins with an underscore:
     predicate => "_has$name"
 
 (that is, an attribute named "_foo" would get "_has_foo")
+
+=head2 trigger => 1
+
+Specifying trigger => 1 will cause the attribute to be created with a trigger
+that calls a named method in the class with the options passed to the trigger.
+By default, the method name the trigger calls is the name of the attribute
+prefixed with "_trigger_".
+
+e.g., for an attribute named "foo" this would be equivalent to:
+
+    trigger => sub { shift->_trigger_foo(@_) }
+
+For an attribute named "_foo":
+
+    trigger => sub { shift->_trigger__foo(@_) }
+
+This naming scheme, in which the trigger is always private, is the same as the
+builder naming scheme (just with a different prefix).
 
 =for Pod::Coverage init_meta
 
