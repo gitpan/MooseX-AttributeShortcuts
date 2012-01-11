@@ -9,7 +9,7 @@
 #
 package MooseX::AttributeShortcuts;
 {
-  $MooseX::AttributeShortcuts::VERSION = '0.007';
+  $MooseX::AttributeShortcuts::VERSION = '0.008';
 }
 
 # ABSTRACT: Shorthand for common attribute options
@@ -23,10 +23,13 @@ use Moose ();
 use Moose::Exporter;
 use Moose::Util::MetaRole;
 
+# debug...
+#use Smart::Comments;
+
 {
     package MooseX::AttributeShortcuts::Trait::Attribute;
 {
-  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.007';
+  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.008';
 }
     use namespace::autoclean;
     use MooseX::Role::Parameterized;
@@ -153,17 +156,27 @@ sub import {
 sub init_meta {
     shift;
     my %args = @_;
-    my $params = delete $args{role_params} || $role_params || {};
+    my $params = delete $args{role_params} || $role_params || undef;
     undef $role_params;
 
+    # If we're given paramaters to pass on to construct a role with, we build
+    # it out here rather than pass them on and allowing apply_metaroles() to
+    # handle it, as there are Very Loud Warnings about how paramatized roles
+    # are non-cachable when generated on the fly.
+
+    ### $params
+    my $role
+        = ($params && scalar keys %$params)
+        ? MooseX::AttributeShortcuts::Trait::Attribute
+            ->meta
+            ->generate_role(parameters => $params)
+        : 'MooseX::AttributeShortcuts::Trait::Attribute'
+        ;
+
     Moose::Util::MetaRole::apply_metaroles(
-        for => $args{for_class},
-        class_metaroles => {
-            attribute => [ 'MooseX::AttributeShortcuts::Trait::Attribute' => $params ],
-        },
-        role_metaroles => {
-            applied_attribute => [ 'MooseX::AttributeShortcuts::Trait::Attribute' => $params ],
-        },
+        for             => $args{for_class},
+        class_metaroles => { attribute         => [ $role ] },
+        role_metaroles  => { applied_attribute => [ $role ] },
     );
 
     return $args{for_class}->meta;
@@ -181,7 +194,7 @@ MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 =head1 VERSION
 
-version 0.007
+version 0.008
 
 =head1 SYNOPSIS
 
@@ -189,6 +202,10 @@ version 0.007
 
     use Moose;
     use MooseX::AttributeShortcuts;
+
+    # same as:
+    #   is => 'ro', lazy => 1, init_arg => undef, builder => '_build_foo'
+    has foo => (is => 'lazy');
 
     # same as: is => 'ro', writer => '_set_foo'
     has foo => (is => 'rwp');
@@ -291,6 +308,18 @@ Specifing is => 'lazy' will cause the following options to be set:
     builder  => "_build_$name"
     init_arg => undef
     lazy     => 1
+
+=head2 is => 'lazy', default => ...
+
+Specifing is => 'lazy' and a default will cause the following options to be
+set:
+
+    is       => 'ro'
+    init_arg => undef
+    lazy     => 1
+
+Note that this is the same as the prior option, but is included / phrased in
+this way in a (successful, I hope) attempt at clarity.
 
 =head2 builder => 1
 

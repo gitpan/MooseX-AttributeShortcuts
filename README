@@ -2,13 +2,17 @@ NAME
     MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 VERSION
-    version 0.007
+    version 0.008
 
 SYNOPSIS
         package Some::Class;
 
         use Moose;
         use MooseX::AttributeShortcuts;
+
+        # same as:
+        #   is => 'ro', lazy => 1, init_arg => undef, builder => '_build_foo'
+        has foo => (is => 'lazy');
 
         # same as: is => 'ro', writer => '_set_foo'
         has foo => (is => 'rwp');
@@ -103,6 +107,17 @@ NEW ATTRIBUTE OPTIONS
         builder  => "_build_$name"
         init_arg => undef
         lazy     => 1
+
+  is => 'lazy', default => ...
+    Specifing is => 'lazy' and a default will cause the following options to
+    be set:
+
+        is       => 'ro'
+        init_arg => undef
+        lazy     => 1
+
+    Note that this is the same as the prior option, but is included /
+    phrased in this way in a (successful, I hope) attempt at clarity.
 
   builder => 1
     Specifying builder => 1 will cause the following options to be set:
