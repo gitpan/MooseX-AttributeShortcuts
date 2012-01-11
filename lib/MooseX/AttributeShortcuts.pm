@@ -9,7 +9,7 @@
 #
 package MooseX::AttributeShortcuts;
 {
-  $MooseX::AttributeShortcuts::VERSION = '0.006';
+  $MooseX::AttributeShortcuts::VERSION = '0.007';
 }
 
 # ABSTRACT: Shorthand for common attribute options
@@ -26,7 +26,7 @@ use Moose::Util::MetaRole;
 {
     package MooseX::AttributeShortcuts::Trait::Attribute;
 {
-  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.006';
+  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.007';
 }
     use namespace::autoclean;
     use MooseX::Role::Parameterized;
@@ -71,7 +71,8 @@ use Moose::Util::MetaRole;
 
                     $options->{is}       = 'ro';
                     $options->{lazy}     = 1;
-                    $options->{builder}  = 1     unless exists $options->{builder};
+                    $options->{builder}  = 1
+                        unless $options->{builder} || $options->{default};
                     $options->{init_arg} = undef unless exists $options->{init_arg};
                 }
             }
@@ -180,7 +181,7 @@ MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 =head1 VERSION
 
-version 0.006
+version 0.007
 
 =head1 SYNOPSIS
 
@@ -204,6 +205,10 @@ version 0.006
     # works as you'd expect for "private": predicate => '_has_bar'
     has _bar => (is => 'ro', predicate => 1);
 
+    # extending? Use the "Shortcuts" trait alias
+    extends 'Some::OtherClass';
+    has '+bar' => (traits => [Shortcuts], builder => 1, ...);
+
     # or...
     package Some::Other::Class;
 
@@ -226,6 +231,20 @@ to the using class.  This trait extends the attribute option processing to
 handle the above variations.
 
 =head1 USAGE
+
+This package automatically applies an attribute metaclass trait.  Unless you
+want to change the defaults, you can ignore the talk about "prefixes" below.
+
+=head1 EXTENDING A CLASS
+
+If you're extending a class and trying to extend its attributes as well,
+you'll find out that the trait is only applied to attributes defined locally
+in the class.  This package exports a trait shortcut function "Shortcuts" that
+will help you apply this in the attribute definition:
+
+    has '+something' => (traits => [Shortcuts], ...);
+
+=head1 PREFIXES
 
 We accept two parameters on the use of this module; they impact how builders
 and writers are named.
