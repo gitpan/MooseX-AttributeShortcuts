@@ -9,7 +9,7 @@
 #
 package MooseX::AttributeShortcuts;
 {
-  $MooseX::AttributeShortcuts::VERSION = '0.008';
+  $MooseX::AttributeShortcuts::VERSION = '0.009'; # TRIAL
 }
 
 # ABSTRACT: Shorthand for common attribute options
@@ -29,7 +29,7 @@ use Moose::Util::MetaRole;
 {
     package MooseX::AttributeShortcuts::Trait::Attribute;
 {
-  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.008';
+  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.009'; # TRIAL
 }
     use namespace::autoclean;
     use MooseX::Role::Parameterized;
@@ -76,7 +76,6 @@ use Moose::Util::MetaRole;
                     $options->{lazy}     = 1;
                     $options->{builder}  = 1
                         unless $options->{builder} || $options->{default};
-                    $options->{init_arg} = undef unless exists $options->{init_arg};
                 }
             }
 
@@ -188,13 +187,15 @@ sub init_meta {
 
 =pod
 
+=encoding utf-8
+
 =head1 NAME
 
 MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 =head1 VERSION
 
-version 0.008
+This document describes 0.009 of MooseX::AttributeShortcuts - released March 26, 2012 as part of MooseX-AttributeShortcuts.
 
 =head1 SYNOPSIS
 
@@ -204,7 +205,7 @@ version 0.008
     use MooseX::AttributeShortcuts;
 
     # same as:
-    #   is => 'ro', lazy => 1, init_arg => undef, builder => '_build_foo'
+    #   is => 'ro', lazy => 1, builder => '_build_foo'
     has foo => (is => 'lazy');
 
     # same as: is => 'ro', writer => '_set_foo'
@@ -237,7 +238,7 @@ version 0.008
 
 =head1 DESCRIPTION
 
-Ever find yourself repeatedly specifing writers and builders, because there's
+Ever find yourself repeatedly specifying writers and builders, because there's
 no good shortcut to specifying them?  Sometimes you want an attribute to have
 a read-only public interface, but a private writer.  And wouldn't it be easier
 to just say "builder => 1" and have the attribute construct the canonical
@@ -295,23 +296,27 @@ various prefixes should be read using the defaults.
 
 =head2 is => 'rwp'
 
-Specifing is => 'rwp' will cause the following options to be set:
+Specifying C<is => 'rwp'> will cause the following options to be set:
 
     is     => 'ro'
     writer => "_set_$name"
 
 =head2 is => 'lazy'
 
-Specifing is => 'lazy' will cause the following options to be set:
+Specifying C<is => 'lazy'> will cause the following options to be set:
 
     is       => 'ro'
     builder  => "_build_$name"
-    init_arg => undef
     lazy     => 1
+
+B<NOTE:> Since 0.009 we no longer set C<init_arg => undef> if no C<init_def>
+is explicitly provided.  This is a change made in parallel with L<Moo>, based
+on a large number of people surprised that lazy also made one's C<init_def>
+undefined.
 
 =head2 is => 'lazy', default => ...
 
-Specifing is => 'lazy' and a default will cause the following options to be
+Specifying C<is => 'lazy'> and a default will cause the following options to be
 set:
 
     is       => 'ro'
@@ -323,13 +328,13 @@ this way in a (successful, I hope) attempt at clarity.
 
 =head2 builder => 1
 
-Specifying builder => 1 will cause the following options to be set:
+Specifying C<builder => 1> will cause the following options to be set:
 
     builder => "_build_$name"
 
 =head2 clearer => 1
 
-Specifying clearer => 1 will cause the following options to be set:
+Specifying C<clearer => 1> will cause the following options to be set:
 
     clearer => "clear_$name"
 
@@ -341,7 +346,7 @@ or, if your attribute name begins with an underscore:
 
 =head2 predicate => 1
 
-Specifying predicate => 1 will cause the following options to be set:
+Specifying C<predicate => 1> will cause the following options to be set:
 
     predicate => "has_$name"
 
@@ -353,7 +358,7 @@ or, if your attribute name begins with an underscore:
 
 =head2 trigger => 1
 
-Specifying trigger => 1 will cause the attribute to be created with a trigger
+Specifying C<trigger => 1> will cause the attribute to be created with a trigger
 that calls a named method in the class with the options passed to the trigger.
 By default, the method name the trigger calls is the name of the attribute
 prefixed with "_trigger_".
@@ -371,12 +376,19 @@ builder naming scheme (just with a different prefix).
 
 =for Pod::Coverage init_meta
 
+=head1 SOURCE
+
+The development version is on github at L<http://github.com/RsrchBoy/moosex-attributeshortcuts>
+and may be cloned from L<git://github.com/RsrchBoy/moosex-attributeshortcuts.git>
+
 =head1 BUGS
 
-All complex software has bugs lurking in it, and this module is no exception.
+Please report any bugs or feature requests on the bugtracker website
+https://github.com/RsrchBoy/moosex-attributeshortcuts/issues
 
-Please report any bugs to "bug-moosex-attributeshortcuts@rt.cpan.org", or
-through the web interface at <http://rt.cpan.org>.
+When submitting a bug or request, please include a test-file or a
+patch to an existing test-file that illustrates the bug or desired
+feature.
 
 =head1 AUTHOR
 
