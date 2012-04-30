@@ -2,8 +2,8 @@ NAME
     MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 VERSION
-    This document describes version 0.010 of MooseX::AttributeShortcuts -
-    released April 06, 2012 as part of MooseX-AttributeShortcuts.
+    This document describes version 0.011 of MooseX::AttributeShortcuts -
+    released April 30, 2012 as part of MooseX-AttributeShortcuts.
 
 SYNOPSIS
         package Some::Class;

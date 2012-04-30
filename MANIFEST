@@ -17,6 +17,7 @@ t/04-clearer-and-predicate.t
 t/05-extend.t
 t/06-role.t
 t/funcs.pm
+t/handles-metaclass.t
 t/release-consistent-version.t
 t/release-eol.t
 t/release-has-version.t

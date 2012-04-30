@@ -58,6 +58,7 @@ eval { $v .= pmver('Moose::Util::MetaRole','any version') };
 eval { $v .= pmver('MooseX::Role::Parameterized','any version') };
 eval { $v .= pmver('MooseX::Types::Common::String','any version') };
 eval { $v .= pmver('MooseX::Types::Moose','any version') };
+eval { $v .= pmver('Test::Fatal','any version') };
 eval { $v .= pmver('Test::Moose','any version') };
 eval { $v .= pmver('Test::More','0.88') };
 eval { $v .= pmver('constant','any version') };
