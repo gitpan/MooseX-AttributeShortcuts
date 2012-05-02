@@ -9,7 +9,7 @@
 #
 package MooseX::AttributeShortcuts;
 {
-  $MooseX::AttributeShortcuts::VERSION = '0.011'; # TRIAL
+  $MooseX::AttributeShortcuts::VERSION = '0.012'; # TRIAL
 }
 
 # ABSTRACT: Shorthand for common attribute options
@@ -29,7 +29,7 @@ use Moose::Util::MetaRole;
 {
     package MooseX::AttributeShortcuts::Trait::Attribute;
 {
-  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.011'; # TRIAL
+  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.012'; # TRIAL
 }
     use namespace::autoclean;
     use MooseX::Role::Parameterized;
@@ -134,8 +134,8 @@ use Moose::Util::MetaRole;
     };
 }
 
-Moose::Exporter->setup_import_methods;
-my ($import) = Moose::Exporter->build_import_methods(
+my ($import, $unimport, $init_meta) = Moose::Exporter->build_import_methods(
+    install => [ 'unimport' ],
     trait_aliases => [
         [ 'MooseX::AttributeShortcuts::Trait::Attribute' => 'Shortcuts' ],
     ],
@@ -155,14 +155,17 @@ sub import {
 }
 
 sub init_meta {
-    shift;
-    my %args = @_;
+    my ($class_name, %args) = @_;
     my $params = delete $args{role_params} || $role_params || undef;
     undef $role_params;
 
+    # Just in case we do ever start to get an $init_meta from ME
+    $init_meta->($class_name, %args)
+        if $init_meta;
+
     # make sure we have a metaclass instance kicking around
     my $for_class = $args{for_class};
-    Moose->init_meta(for_class => $for_class)
+    die "Class $for_class has no metaclass!"
         unless Class::MOP::class_of($for_class);
 
     # If we're given paramaters to pass on to construct a role with, we build
@@ -202,7 +205,7 @@ MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 =head1 VERSION
 
-This document describes version 0.011 of MooseX::AttributeShortcuts - released April 30, 2012 as part of MooseX-AttributeShortcuts.
+This document describes version 0.012 of MooseX::AttributeShortcuts - released May 02, 2012 as part of MooseX-AttributeShortcuts.
 
 =head1 SYNOPSIS
 
