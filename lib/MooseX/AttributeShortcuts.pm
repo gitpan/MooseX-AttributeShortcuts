@@ -9,7 +9,7 @@
 #
 package MooseX::AttributeShortcuts;
 {
-  $MooseX::AttributeShortcuts::VERSION = '0.012'; # TRIAL
+  $MooseX::AttributeShortcuts::VERSION = '0.013';
 }
 
 # ABSTRACT: Shorthand for common attribute options
@@ -29,7 +29,7 @@ use Moose::Util::MetaRole;
 {
     package MooseX::AttributeShortcuts::Trait::Attribute;
 {
-  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.012'; # TRIAL
+  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.013';
 }
     use namespace::autoclean;
     use MooseX::Role::Parameterized;
@@ -199,13 +199,15 @@ sub init_meta {
 
 =encoding utf-8
 
+=for :stopwords Chris Weyl
+
 =head1 NAME
 
 MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 =head1 VERSION
 
-This document describes version 0.012 of MooseX::AttributeShortcuts - released May 02, 2012 as part of MooseX-AttributeShortcuts.
+This document describes version 0.013 of MooseX::AttributeShortcuts - released July 15, 2012 as part of MooseX-AttributeShortcuts.
 
 =head1 SYNOPSIS
 
