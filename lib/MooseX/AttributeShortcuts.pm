@@ -9,7 +9,7 @@
 #
 package MooseX::AttributeShortcuts;
 {
-  $MooseX::AttributeShortcuts::VERSION = '0.013';
+  $MooseX::AttributeShortcuts::VERSION = '0.014';
 }
 
 # ABSTRACT: Shorthand for common attribute options
@@ -29,7 +29,7 @@ use Moose::Util::MetaRole;
 {
     package MooseX::AttributeShortcuts::Trait::Attribute;
 {
-  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.013';
+  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.014';
 }
     use namespace::autoclean;
     use MooseX::Role::Parameterized;
@@ -62,6 +62,8 @@ use Moose::Util::MetaRole;
         my $_process_options = sub {
             my ($class, $name, $options) = @_;
 
+            my $_has = sub { defined $options->{$_[0]} };
+
             if ($options->{is}) {
 
                 if ($options->{is} eq 'rwp') {
@@ -75,7 +77,7 @@ use Moose::Util::MetaRole;
                     $options->{is}       = 'ro';
                     $options->{lazy}     = 1;
                     $options->{builder}  = 1
-                        unless $options->{builder} || $options->{default};
+                        unless $_has->('builder') || $_has->('default');
                 }
             }
 
@@ -207,7 +209,7 @@ MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 =head1 VERSION
 
-This document describes version 0.013 of MooseX::AttributeShortcuts - released July 15, 2012 as part of MooseX-AttributeShortcuts.
+This document describes version 0.014 of MooseX::AttributeShortcuts - released August 16, 2012 as part of MooseX-AttributeShortcuts.
 
 =head1 SYNOPSIS
 
