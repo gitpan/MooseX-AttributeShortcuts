@@ -17,6 +17,7 @@ t/04-clearer-and-predicate.t
 t/05-extend.t
 t/06-role.t
 t/07-trigger.t
+t/anon-builder.t
 t/funcs.pm
 t/handles-metaclass.t
 t/release-consistent-version.t

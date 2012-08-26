@@ -9,7 +9,7 @@
 #
 package MooseX::AttributeShortcuts;
 {
-  $MooseX::AttributeShortcuts::VERSION = '0.014';
+  $MooseX::AttributeShortcuts::VERSION = '0.015';
 }
 
 # ABSTRACT: Shorthand for common attribute options
@@ -29,7 +29,7 @@ use Moose::Util::MetaRole;
 {
     package MooseX::AttributeShortcuts::Trait::Attribute;
 {
-  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.014';
+  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.015';
 }
     use namespace::autoclean;
     use MooseX::Role::Parameterized;
@@ -57,12 +57,21 @@ use Moose::Util::MetaRole;
             clearer   => 'clear',
             trigger   => '_trigger_',
             %{ $p->prefixes },
-       );
+        );
+
+        has anon_builder => (
+            reader    => 'anon_builder',
+            writer    => '_set_anon_builder',
+            isa       => 'CodeRef',
+            predicate => 'has_anon_builder',
+            init_arg  => '_anon_builder',
+        );
 
         my $_process_options = sub {
             my ($class, $name, $options) = @_;
 
             my $_has = sub { defined $options->{$_[0]} };
+            my $_opt = sub { $_has->(@_) ? $options->{$_[0]} : q{} };
 
             if ($options->{is}) {
 
@@ -86,7 +95,8 @@ use Moose::Util::MetaRole;
                 $options->{lazy_build} = 1;
                 $options->{clearer}    = "_clear_$name";
                 $options->{predicate}  = "_has_$name";
-                $options->{init_arg}   = "_$name" unless exists $options->{init_arg};
+                $options->{init_arg}   = "_$name"
+                    unless exists $options->{init_arg};
             }
 
             my $is_private = sub { $name =~ /^_/ ? $_[0] : $_[1] };
@@ -103,10 +113,21 @@ use Moose::Util::MetaRole;
                 return;
             };
 
+            # XXX install builder here if a coderef
+            if (defined $options->{builder}) {
+
+                #if (ref $_opt->('builder') eq 'CODE') {
+                if ((ref $options->{builder} || q{}) eq 'CODE') {
+
+                    $options->{_anon_builder} = $options->{builder};
+                    $options->{builder}       = 1;
+                }
+
+                $options->{builder} = "$bprefix$name"
+                    if $options->{builder} eq '1';
+            }
             ### set our other defaults, if requested...
             $default_for->($_) for qw{ predicate clearer };
-            $options->{builder} = "$bprefix$name"
-                if $options->{builder} && $options->{builder} eq '1';
             my $trigger = "$prefix{trigger}$name";
             $options->{trigger} = sub { shift->$trigger(@_) }
                 if $options->{trigger} && $options->{trigger} eq '1';
@@ -132,6 +153,21 @@ use Moose::Util::MetaRole;
                 if $options{__hack_no_process_options};
 
             return $self->$orig($name, %options);
+        };
+
+
+        # we hijack attach_to_class in order to install our anon_builder, if
+        # we have one.  Note that we don't go the normal
+        # associate_method/install_accessor/etc route as this is kinda...
+        # different.
+
+        after attach_to_class => sub {
+            my ($self, $class) = @_;
+
+            return unless $self->has_anon_builder;
+
+            $class->add_method($self->builder => $self->anon_builder);
+            return;
         };
     };
 }
@@ -209,7 +245,7 @@ MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 =head1 VERSION
 
-This document describes version 0.014 of MooseX::AttributeShortcuts - released August 16, 2012 as part of MooseX-AttributeShortcuts.
+This document describes version 0.015 of MooseX::AttributeShortcuts - released August 26, 2012 as part of MooseX-AttributeShortcuts.
 
 =head1 SYNOPSIS
 
@@ -385,6 +421,21 @@ For an attribute named "_foo":
 
 This naming scheme, in which the trigger is always private, is the same as the
 builder naming scheme (just with a different prefix).
+
+=head2 builder => sub { ... }
+
+Passing a coderef to builder will cause that coderef to be installed in the
+class this attribute is associated with the name you'd expect, and
+C<builder =E<gt> 1> to be set.
+
+e.g., in your class,
+
+    has foo => (is => 'ro', builder => sub { 'bar!' });
+
+...is effectively the same as...
+
+    has foo => (is => 'ro', builder => '_build_foo');
+    sub _build_foo { 'bar!' }
 
 =for Pod::Coverage init_meta
 

@@ -46,6 +46,7 @@
             "Moose::Role" : "0",
             "Test::Fatal" : "0",
             "Test::Moose" : "0",
+            "Test::Moose::More" : "0.010",
             "Test::More" : "0.88",
             "constant" : "0"
          }
@@ -54,11 +55,11 @@
    "provides" : {
       "MooseX::AttributeShortcuts" : {
          "file" : "lib/MooseX/AttributeShortcuts.pm",
-         "version" : "0.014"
+         "version" : "0.015"
       },
       "MooseX::AttributeShortcuts::Trait::Attribute" : {
          "file" : "lib/MooseX/AttributeShortcuts.pm",
-         "version" : "0.014"
+         "version" : "0.015"
       }
    },
    "release_status" : "stable",
@@ -73,7 +74,7 @@
          "web" : "https://github.com/RsrchBoy/moosex-attributeshortcuts"
       }
    },
-   "version" : "0.014",
+   "version" : "0.015",
    "x_Dist_Zilla" : {
       "plugins" : [
          {
@@ -239,7 +240,7 @@
          {
             "class" : "Dist::Zilla::Plugin::GitHub::Meta",
             "name" : "@Filter/Dist::Zilla::Plugin::GitHub::Meta",
-            "version" : "0.25"
+            "version" : "0.27"
          },
          {
             "class" : "Dist::Zilla::Plugin::MetaConfig",
@@ -294,7 +295,7 @@
          {
             "class" : "Dist::Zilla::Plugin::GitHub::Update",
             "name" : "@Filter/Dist::Zilla::Plugin::GitHub::Update",
-            "version" : "0.25"
+            "version" : "0.27"
          },
          {
             "class" : "Dist::Zilla::Plugin::Signature",

@@ -17,6 +17,7 @@ my %WriteMakefileArgs = (
     "Moose::Role" => 0,
     "Test::Fatal" => 0,
     "Test::Moose" => 0,
+    "Test::Moose::More" => "0.010",
     "Test::More" => "0.88",
     "constant" => 0
   },
@@ -38,7 +39,7 @@ my %WriteMakefileArgs = (
     "strict" => 0,
     "warnings" => 0
   },
-  "VERSION" => "0.014",
+  "VERSION" => "0.015",
   "test" => {
     "TESTS" => "t/*.t"
   }
