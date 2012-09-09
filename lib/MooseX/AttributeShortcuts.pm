@@ -9,7 +9,7 @@
 #
 package MooseX::AttributeShortcuts;
 {
-  $MooseX::AttributeShortcuts::VERSION = '0.015';
+  $MooseX::AttributeShortcuts::VERSION = '0.016'; # TRIAL
 }
 
 # ABSTRACT: Shorthand for common attribute options
@@ -29,7 +29,7 @@ use Moose::Util::MetaRole;
 {
     package MooseX::AttributeShortcuts::Trait::Attribute;
 {
-  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.015';
+  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.016'; # TRIAL
 }
     use namespace::autoclean;
     use MooseX::Role::Parameterized;
@@ -95,21 +95,21 @@ use Moose::Util::MetaRole;
                 $options->{lazy_build} = 1;
                 $options->{clearer}    = "_clear_$name";
                 $options->{predicate}  = "_has_$name";
-                $options->{init_arg}   = "_$name"
-                    unless exists $options->{init_arg};
             }
 
             my $is_private = sub { $name =~ /^_/ ? $_[0] : $_[1] };
             my $default_for = sub {
                 my ($opt) = @_;
 
-                if ($options->{$opt} && $options->{$opt} eq '1') {
-                    $options->{$opt} =
-                        $is_private->('_', q{}) .
-                        $prefix{$opt} .
-                        $is_private->(q{}, '_') .
-                        $name;
-                }
+                return unless $_has->($opt);
+                my $opt_val = $_opt->($opt);
+
+                my ($head, $mid)
+                    = $opt_val eq '1'  ? ($is_private->('_', q{}), $is_private->(q{}, '_'))
+                    : $opt_val eq '-1' ? ($is_private->(q{}, '_'), $is_private->(q{}, '_'))
+                    :                    return;
+
+                $options->{$opt} = $head . $prefix{$opt} . $mid . $name;
                 return;
             };
 
@@ -231,7 +231,7 @@ sub init_meta {
 
 1;
 
-
+__END__
 
 =pod
 
@@ -245,7 +245,7 @@ MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 =head1 VERSION
 
-This document describes version 0.015 of MooseX::AttributeShortcuts - released August 26, 2012 as part of MooseX-AttributeShortcuts.
+This document describes version 0.016 of MooseX::AttributeShortcuts - released September 08, 2012 as part of MooseX-AttributeShortcuts.
 
 =head1 SYNOPSIS
 
@@ -337,7 +337,8 @@ Unless specified here, all options defined by L<Moose::Meta::Attribute> and
 L<Class::MOP::Attribute> remain unchanged.
 
 Want to see additional options?  Ask, or better yet, fork on GitHub and send
-a pull request.
+a pull request. If the shortcuts you're asking for already exist in L<Moo> or
+L<Mouse> or elsewhere, please note that as it will carry significant weight.
 
 For the following, "$name" should be read as the attribute name; and the
 various prefixes should be read using the defaults.
@@ -466,7 +467,3 @@ This is free software, licensed under:
   The GNU Lesser General Public License, Version 2.1, February 1999
 
 =cut
-
-
-__END__
-
