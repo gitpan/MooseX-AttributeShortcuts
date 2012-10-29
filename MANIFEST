@@ -21,6 +21,8 @@ t/07-trigger.t
 t/anon-builder.t
 t/funcs.pm
 t/handles-metaclass.t
+t/inline_subtyping.t
+t/inline_typing.t
 t/release-consistent-version.t
 t/release-eol.t
 t/release-has-version.t

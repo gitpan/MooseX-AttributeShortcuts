@@ -8,13 +8,13 @@ build_requires:
   Moose::Role: 0
   Test::Fatal: 0
   Test::Moose: 0
-  Test::Moose::More: 0.010
+  Test::Moose::More: 0.017
   Test::More: 0.88
   constant: 0
 configure_requires:
   ExtUtils::MakeMaker: 6.30
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 4.300023, CPAN::Meta::Converter version 2.120921'
+generated_by: 'Dist::Zilla version 4.300028, CPAN::Meta::Converter version 2.120921'
 license: lgpl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -27,14 +27,15 @@ no_index:
 provides:
   MooseX::AttributeShortcuts:
     file: lib/MooseX/AttributeShortcuts.pm
-    version: 0.016
+    version: 0.017
   MooseX::AttributeShortcuts::Trait::Attribute:
     file: lib/MooseX/AttributeShortcuts.pm
-    version: 0.016
+    version: 0.017
 requires:
   Moose: 0
   Moose::Exporter: 0
   Moose::Util::MetaRole: 0
+  Moose::Util::TypeConstraints: 0
   MooseX::Role::Parameterized: 0
   MooseX::Types::Common::String: 0
   MooseX::Types::Moose: 0
@@ -46,61 +47,63 @@ resources:
   bugtracker: https://github.com/RsrchBoy/moosex-attributeshortcuts/issues
   homepage: http://metacpan.org/release/MooseX-AttributeShortcuts/
   repository: git://github.com/RsrchBoy/moosex-attributeshortcuts.git
-version: 0.016
+version: 0.017
 x_Dist_Zilla:
+  perl:
+    version: 5.016001
   plugins:
     -
       class: Dist::Zilla::Plugin::NextRelease
       name: '@Filter/Dist::Zilla::Plugin::NextRelease'
-      version: 4.300023
+      version: 4.300028
     -
       class: Dist::Zilla::Plugin::Git::Check
       name: '@Filter/@Git/Check'
-      version: 1.122530
+      version: 2.001
     -
       class: Dist::Zilla::Plugin::Git::Commit
       name: '@Filter/@Git/Commit'
-      version: 1.122530
+      version: 2.001
     -
       class: Dist::Zilla::Plugin::Git::Tag
       name: '@Filter/@Git/Tag'
-      version: 1.122530
+      version: 2.001
     -
       class: Dist::Zilla::Plugin::Git::Push
       name: '@Filter/@Git/Push'
-      version: 1.122530
+      version: 2.001
     -
       class: Dist::Zilla::Plugin::Git::NextVersion
       name: '@Filter/Dist::Zilla::Plugin::Git::NextVersion'
-      version: 1.122530
+      version: 2.001
     -
       class: Dist::Zilla::Plugin::Git::CheckFor::CorrectBranch
       name: '@Filter/@Git::CheckFor/Git::CheckFor::CorrectBranch'
-      version: 0.004
+      version: 0.005
     -
       class: Dist::Zilla::Plugin::Git::CheckFor::Fixups
       name: '@Filter/@Git::CheckFor/Git::CheckFor::Fixups'
-      version: 0.004
+      version: 0.005
     -
       class: Dist::Zilla::Plugin::GatherDir
       name: '@Filter/Dist::Zilla::Plugin::GatherDir'
-      version: 4.300023
+      version: 4.300028
     -
       class: Dist::Zilla::Plugin::PruneCruft
       name: '@Filter/Dist::Zilla::Plugin::PruneCruft'
-      version: 4.300023
+      version: 4.300028
     -
       class: Dist::Zilla::Plugin::ExecDir
       name: '@Filter/Dist::Zilla::Plugin::ExecDir'
-      version: 4.300023
+      version: 4.300028
     -
       class: Dist::Zilla::Plugin::ShareDir
       name: '@Filter/Dist::Zilla::Plugin::ShareDir'
-      version: 4.300023
+      version: 4.300028
     -
       class: Dist::Zilla::Plugin::MakeMaker
       name: '@Filter/Dist::Zilla::Plugin::MakeMaker'
-      version: 4.300023
+      version: 4.300028
     -
       class: Dist::Zilla::Plugin::InstallGuide
       name: '@Filter/Dist::Zilla::Plugin::InstallGuide'
@@ -108,7 +111,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Manifest
       name: '@Filter/Dist::Zilla::Plugin::Manifest'
-      version: 4.300023
+      version: 4.300028
     -
       class: Dist::Zilla::Plugin::SurgicalPkgVersion
       name: '@Filter/Dist::Zilla::Plugin::SurgicalPkgVersion'
@@ -124,11 +127,11 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::ReportVersions::Tiny
       name: '@Filter/Dist::Zilla::Plugin::ReportVersions::Tiny'
-      version: 1.05
+      version: 1.08
     -
       class: Dist::Zilla::Plugin::AutoPrereqs
       name: '@Filter/Dist::Zilla::Plugin::AutoPrereqs'
-      version: 4.300023
+      version: 4.300028
     -
       class: Dist::Zilla::Plugin::Prepender
       name: '@Filter/Dist::Zilla::Plugin::Prepender'
@@ -140,11 +143,11 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::PodCoverageTests
       name: '@Filter/Dist::Zilla::Plugin::PodCoverageTests'
-      version: 4.300023
+      version: 4.300028
     -
       class: Dist::Zilla::Plugin::PodSyntaxTests
       name: '@Filter/Dist::Zilla::Plugin::PodSyntaxTests'
-      version: 4.300023
+      version: 4.300028
     -
       class: Dist::Zilla::Plugin::NoTabsTests
       name: '@Filter/Dist::Zilla::Plugin::NoTabsTests'
@@ -168,7 +171,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::ExtraTests
       name: '@Filter/Dist::Zilla::Plugin::ExtraTests'
-      version: 4.300023
+      version: 4.300028
     -
       class: Dist::Zilla::Plugin::NoSmartCommentsTests
       name: '@Filter/Dist::Zilla::Plugin::NoSmartCommentsTests'
@@ -176,19 +179,19 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::MetaConfig
       name: '@Filter/Dist::Zilla::Plugin::MetaConfig'
-      version: 4.300023
+      version: 4.300028
     -
       class: Dist::Zilla::Plugin::MetaJSON
       name: '@Filter/Dist::Zilla::Plugin::MetaJSON'
-      version: 4.300023
+      version: 4.300028
     -
       class: Dist::Zilla::Plugin::MetaYAML
       name: '@Filter/Dist::Zilla::Plugin::MetaYAML'
-      version: 4.300023
+      version: 4.300028
     -
       class: Dist::Zilla::Plugin::MetaNoIndex
       name: '@Filter/Dist::Zilla::Plugin::MetaNoIndex'
-      version: 4.300023
+      version: 4.300028
     -
       class: Dist::Zilla::Plugin::MetaProvides::Package
       name: '@Filter/Dist::Zilla::Plugin::MetaProvides::Package'
@@ -200,7 +203,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::TestRelease
       name: '@Filter/Dist::Zilla::Plugin::TestRelease'
-      version: 4.300023
+      version: 4.300028
     -
       class: Dist::Zilla::Plugin::CheckChangesHasContent
       name: '@Filter/Dist::Zilla::Plugin::CheckChangesHasContent'
@@ -212,7 +215,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::ConfirmRelease
       name: '@Filter/Dist::Zilla::Plugin::ConfirmRelease'
-      version: 4.300023
+      version: 4.300028
     -
       class: Dist::Zilla::Plugin::GitHub::Update
       name: '@Filter/Dist::Zilla::Plugin::GitHub::Update'
@@ -220,7 +223,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::UploadToCPAN
       name: '@Filter/Dist::Zilla::Plugin::UploadToCPAN'
-      version: 4.300023
+      version: 4.300028
     -
       class: Dist::Zilla::Plugin::Signature
       name: '@Filter/Dist::Zilla::Plugin::Signature'
@@ -240,7 +243,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::License
       name: '@Filter/Dist::Zilla::Plugin::License'
-      version: 4.300023
+      version: 4.300028
     -
       class: Dist::Zilla::Plugin::CopyFilesFromBuild
       name: '@Filter/Dist::Zilla::Plugin::CopyFilesFromBuild'
@@ -256,29 +259,29 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::FinderCode
       name: ':InstallModules'
-      version: 4.300023
+      version: 4.300028
     -
       class: Dist::Zilla::Plugin::FinderCode
       name: ':IncModules'
-      version: 4.300023
+      version: 4.300028
     -
       class: Dist::Zilla::Plugin::FinderCode
       name: ':TestFiles'
-      version: 4.300023
+      version: 4.300028
     -
       class: Dist::Zilla::Plugin::FinderCode
       name: ':ExecFiles'
-      version: 4.300023
+      version: 4.300028
     -
       class: Dist::Zilla::Plugin::FinderCode
       name: ':ShareFiles'
-      version: 4.300023
+      version: 4.300028
     -
       class: Dist::Zilla::Plugin::FinderCode
       name: ':MainModule'
-      version: 4.300023
+      version: 4.300028
   zilla:
     class: Dist::Zilla::Dist::Builder
     config:
-      is_trial: 1
-    version: 4.300023
+      is_trial: 0
+    version: 4.300028
