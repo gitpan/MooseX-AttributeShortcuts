@@ -9,7 +9,7 @@
 #
 package MooseX::AttributeShortcuts;
 {
-  $MooseX::AttributeShortcuts::VERSION = '0.017';
+  $MooseX::AttributeShortcuts::VERSION = '0.018'; # TRIAL
 }
 
 # ABSTRACT: Shorthand for common attribute options
@@ -30,7 +30,7 @@ use Moose::Util::TypeConstraints;
 {
     package MooseX::AttributeShortcuts::Trait::Attribute;
 {
-  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.017';
+  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.018'; # TRIAL
 }
     use namespace::autoclean;
     use MooseX::Role::Parameterized;
@@ -126,26 +126,35 @@ use Moose::Util::TypeConstraints;
             $options->{isa} = enum(delete $options->{isa_enum})
                 if $_has->('isa_enum');
 
-            $class->throw_error('You must specify an isa when declaring a constraint')
-                if $_has->('constraint') && !$_has->('isa');
+            ### the pretty business of on-the-fly subtyping...
+            if ($_has->('constraint')) {
 
-            if (my $isa = $_opt->('isa')) {
-
-                my @opts;
+                # check for errors...
+                $class->throw_error('You must specify an "isa" when declaring a "constraint"')
+                    if !$_has->('isa');
+                $class->throw_error('"constraint" must be a CODE reference')
+                    if $_ref->('constraint') ne 'CODE';
 
                 # constraint checking! XXX message, etc?
-                push @opts, constraint => $_opt->('constraint')
+                push my @opts, constraint => $_opt->('constraint')
                     if $_ref->('constraint') eq 'CODE';
 
-                if (@opts) {
+                # stash our original option away and construct our new one
+                my $isa = $options->{original_isa} = $_opt->('isa');
+                my $isa_tc = _find_or_create_isa_type_constraint($isa);
+                my $new_tc = $isa_tc->create_child_type(@opts);
 
-                    # stash our original option away and construct our new one
-                    $options->{original_isa} = $isa;
-                    $options->{isa}
-                        = _find_or_create_isa_type_constraint($isa)
-                        ->create_child_type(@opts)
-                        ;
+                if ($isa_tc->has_coercion && $_opt->('coerce') eq "1") {
+
+                    # create our coercion as a copy of the parent
+                    $new_tc->coercion(Moose::Meta::TypeCoercion->new(
+                        type_constraint   => $new_tc,
+                        type_coercion_map => $isa_tc->coercion->type_coercion_map,
+                    ));
                 }
+
+                # fin constraint mucking....
+                $options->{isa} = $new_tc;
             }
 
             if ($options->{lazy_build} && $options->{lazy_build} eq 'private') {
@@ -296,7 +305,7 @@ __END__
 
 =encoding utf-8
 
-=for :stopwords Chris Weyl
+=for :stopwords Chris Weyl GitHub attribute's isa one's rwp
 
 =head1 NAME
 
@@ -304,7 +313,7 @@ MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 =head1 VERSION
 
-This document describes version 0.017 of MooseX::AttributeShortcuts - released October 28, 2012 as part of MooseX-AttributeShortcuts.
+This document describes version 0.018 of MooseX::AttributeShortcuts - released January 09, 2013 as part of MooseX-AttributeShortcuts.
 
 =head1 SYNOPSIS
 
@@ -356,6 +365,8 @@ to just say "builder => 1" and have the attribute construct the canonical
 This package causes an attribute trait to be applied to all attributes defined
 to the using class.  This trait extends the attribute option processing to
 handle the above variations.
+
+=for Pod::Coverage init_meta
 
 =head1 USAGE
 
@@ -497,13 +508,14 @@ e.g., in your class,
     has foo => (is => 'ro', builder => '_build_foo');
     sub _build_foo { 'bar!' }
 
-=head2 constraint => sub { ... }
+=head2 isa => ..., constraint => sub { ... }
 
 Specifying the constraint option with a coderef will cause a new type
 constraint to be created, with the parent type being the type specified in the
 C<isa> option and the constraint being the coderef supplied here.
 
-Example:
+For example, only integers greater than 10 will pass this attribute's type
+constraint:
 
     # value must be an integer greater than 10 to pass the constraint
     has thinger => (
@@ -514,21 +526,25 @@ Example:
 
 Note that if you supply a constraint, you must also provide an C<isa>.
 
-=for Pod::Coverage init_meta
+=head2 isa => ..., constraint => sub { ... }, coerce => 1
 
-=head1 SOURCE
+Supplying a constraint and asking for coercion will "Just Work", that is, any
+coercions that the C<isa> type has will still work.
 
-The development version is on github at L<http://github.com/RsrchBoy/moosex-attributeshortcuts>
-and may be cloned from L<git://github.com/RsrchBoy/moosex-attributeshortcuts.git>
+For example, let's say that you're using the C<File> type constraint from
+L<MooseX::Types::Path::Class>, and you want an additional constraint that the
+file must exist:
 
-=head1 BUGS
+    has thinger => (
+        is         => 'ro',
+        isa        => File,
+        constraint => sub { !! $_->stat },
+        coerce     => 1,
+    );
 
-Please report any bugs or feature requests on the bugtracker website
-https://github.com/RsrchBoy/moosex-attributeshortcuts/issues
-
-When submitting a bug or request, please include a test-file or a
-patch to an existing test-file that illustrates the bug or desired
-feature.
+C<thinger> will correctly coerce the string "/etc/passwd" to a
+C<Path::Class:File>, and will only accept the coerced result as a value if
+the file exists.
 
 =head1 AUTHOR
 

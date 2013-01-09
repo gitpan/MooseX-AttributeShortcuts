@@ -1,5 +1,5 @@
 This file contains message digests of all files listed in MANIFEST,
-signed via the Module::Signature module, version 0.68.
+signed via the Module::Signature module, version 0.70.
 
 To verify the content in this distribution, first make sure you have
 Module::Signature installed, then type:
@@ -14,18 +14,19 @@ not run its Makefile.PL or Build.PL.
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-SHA1 27707c7d1544a5a3cbca43bf443f39e2bb154cf5 Changes
+SHA1 d6919dcf313bc1f8f320b718d04567d0fb4575b7 Changes
 SHA1 0b16c282a427d2bf87e66bc839170a89d1f2f99f INSTALL
 SHA1 514760f01d379ad532c49a196f1c6f7912b65556 LICENSE
-SHA1 9944816edd6c0fd7fcd278bbeba15c4c7cb7bc14 MANIFEST
-SHA1 ad33268042d92c4c6e7539ff6d4a6f934e865831 META.json
-SHA1 9c88e60e0b7552c561fb87768b6eef39bb6994ee META.yml
-SHA1 1cec4bf30e32924dd19f502664b25f386a70c888 Makefile.PL
-SHA1 e0c405d042b5c758544b421e2f53dc7213a413ae README
-SHA1 8a912f6044f65135fee0bf30346887f5b81deae5 dist.ini
-SHA1 6aa4fded8f6dc033b20b785ab8a6fc0219ee1109 lib/MooseX/AttributeShortcuts.pm
+SHA1 1e75265e1723dc2716905190b409ed229c18d4b7 MANIFEST
+SHA1 1950d925f2c50f3db02cf6c769651f30d764e3c1 META.json
+SHA1 6f4d33ac20e3b08350658f81f9d6f305fa18a5a1 META.yml
+SHA1 a36cb2e57c21f93a3c583808d6d9e5a5ff2a29be Makefile.PL
+SHA1 d390e5ac37397e10e76baf21b2a6bb436fb81455 README
+SHA1 dd64a276e8cd32d10144253eca23320de5096706 cpanfile
+SHA1 5dafee4fc2c3642d0de8db57ec01d89d67fa5979 dist.ini
+SHA1 95e13328b5071bcd1679a1e1d3625f371dd2c3fa lib/MooseX/AttributeShortcuts.pm
 SHA1 ad5c40aecbdd618e03450b94dd5685a030036c0d t/00-compile.t
-SHA1 10adce6ca9e0c6692003e60696984e341b1426f9 t/000-report-versions-tiny.t
+SHA1 1c519d020f36ea89a906a749c4916d92d7a39f31 t/000-report-versions-tiny.t
 SHA1 b201b29194c8e2d174032993fbf9b989d204943c t/01-basic.t
 SHA1 feb9ac405e94777b2eccb564c75e81b303877592 t/02-parameterized.t
 SHA1 8b3de3014b22392c176c297ec6169376b4c7d080 t/03-lazy.t
@@ -34,9 +35,11 @@ SHA1 dcdac8f250e53b097c3727c6d4e5ccf2d7512277 t/05-extend.t
 SHA1 aeead510300b711df372bf0c026a60099d330927 t/06-role.t
 SHA1 141674978f422f7ae85a333e45b6984fdad9a1e8 t/07-trigger.t
 SHA1 2983277e0687e4cf8119b46779afb8b11b3d6329 t/anon-builder.t
+SHA1 37acf8f1d6ebf54b49b1576cecd7c4684ad699d4 t/author-pod-spell.t
 SHA1 0693757ec019aebd05fc427a757294136889cf74 t/funcs.pm
 SHA1 2a3a2473622b9bd48532a52cfb1aafe72a0d34af t/handles-metaclass.t
-SHA1 74940219af9b6d674b7fbe3189b8172a57e6d5a9 t/inline_subtyping.t
+SHA1 efa514912dc489236506a5a9aca8414a6b661e52 t/inline_subtyping.t
+SHA1 2b9133942088af2b4b6926c65d7b2da8beb1f2b6 t/inline_subtyping_with_coercion.t
 SHA1 1f404d2af0d38f521691a6154e35de264d9ab3a0 t/inline_typing.t
 SHA1 9c3627ff37f4fd5bddc34bf46cf3359eaf76a060 t/release-consistent-version.t
 SHA1 a032c41ef6887fab1b900669c2d304fab46680e2 t/release-eol.t
@@ -44,16 +47,16 @@ SHA1 0c566db92a9f12450c1e962d885634aa2cf1e8ca t/release-has-version.t
 SHA1 4953bba5de90d892df5886383ac42c42c167d9d9 t/release-no-smart-comments.t
 SHA1 455d1dd1867212a665ad5ea4126b572411de300c t/release-no-tabs.t
 SHA1 e9e8e7e3e707ce9bd2046a7dd3817cd5555e8874 t/release-pod-coverage.t
+SHA1 3fa67006bb62bd6f25ca861429881ff611f65d78 t/release-pod-linkcheck.t
 SHA1 7ff128eaa77cb3639c774c44cf3e0128d691d480 t/release-pod-syntax.t
-SHA1 64fc59ae48fee3f56172b7104cb123b2e5964ba3 t/release-portability.t
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.11 (GNU/Linux)
 
-iQEcBAEBAgAGBQJQjf3UAAoJEOd5N1CvIgQkz7MH/i2XMxfa9UChaOoaq/RX08Uy
-QYIUXmChTkfawQ1Lur80VSZ8au+LwT86XSREzH9icFn0UPqbK1QdfQjzIKztp6Mp
-AQoxkpNeDrsJYeI/0ThUSkcTd02o8dt/CQc4mXLg2RLnF0HlCj3SnE6rr10Ch5z+
-Snx0QUxTNxbrvxmlm/FK3Gl7LeHyz0/PiNmsS+cXHghQ25jtixOuEPQ43Q4AZM+w
-/amp05VLYUmarNW5ZMqsYL1AGek8EP4wygauPZKFKOwLEqGq+8quW9Whr2pbz+r9
-Pamqkjau5Fz8HZwW8zHXhZ0KPBScZ+bwxh/g0yrFjKVWzN8Nex0yThrhtz/PGfA=
-=WYrO
+iQEcBAEBAgAGBQJQ7bTtAAoJEOd5N1CvIgQk6PMH+QG5IrqxbaBsPhNfvVajbGkA
+oZrSNHl94vdpIVJnvf43c6ZvTb6dIl/L8tgtvKC3kKqmxauThDo0TsImAqvfLZqF
+5Xo+3MBFe17AnpXjK7tJP61CfFveSSxDMh7fxHYs4kJS2ZXasbXEl+1+OwwJS752
+3rRObN2WoYKnc5d0eeq29XpNSw2KEniZF9d7jBeyRv1RguLiRxgViapBgwmGwEOv
+js+6LZWjZ/ZvQ/djeI54GFOsWnRwoFOwkM7POZO2ucENnLY0d83q0NRFkmanhrfs
+twQdh8XmE1wWka4uX4ccosDzeOqV8WLko58lR0jYiKmB5FINfnwQUDrL2/YYnn4=
+=4xUF
 -----END PGP SIGNATURE-----

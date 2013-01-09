@@ -7,6 +7,7 @@ META.yml
 Makefile.PL
 README
 SIGNATURE
+cpanfile
 dist.ini
 lib/MooseX/AttributeShortcuts.pm
 t/00-compile.t
@@ -19,9 +20,11 @@ t/05-extend.t
 t/06-role.t
 t/07-trigger.t
 t/anon-builder.t
+t/author-pod-spell.t
 t/funcs.pm
 t/handles-metaclass.t
 t/inline_subtyping.t
+t/inline_subtyping_with_coercion.t
 t/inline_typing.t
 t/release-consistent-version.t
 t/release-eol.t
@@ -29,5 +32,5 @@ t/release-has-version.t
 t/release-no-smart-comments.t
 t/release-no-tabs.t
 t/release-pod-coverage.t
+t/release-pod-linkcheck.t
 t/release-pod-syntax.t
-t/release-portability.t
