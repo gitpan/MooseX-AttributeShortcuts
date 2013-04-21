@@ -8,8 +8,10 @@
 #   The GNU Lesser General Public License, Version 2.1, February 1999
 #
 package MooseX::AttributeShortcuts;
+# git description: 0.018-7-gdc99f4b
+
 {
-  $MooseX::AttributeShortcuts::VERSION = '0.018'; # TRIAL
+  $MooseX::AttributeShortcuts::VERSION = '0.019';
 }
 
 # ABSTRACT: Shorthand for common attribute options
@@ -29,8 +31,10 @@ use Moose::Util::TypeConstraints;
 
 {
     package MooseX::AttributeShortcuts::Trait::Attribute;
+# git description: 0.018-7-gdc99f4b
+
 {
-  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.018'; # TRIAL
+  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.019';
 }
     use namespace::autoclean;
     use MooseX::Role::Parameterized;
@@ -52,6 +56,8 @@ use Moose::Util::TypeConstraints;
 
     role {
         my $p = shift @_;
+
+        with 'MooseX::CoercePerAttribute' => { -version => 0.802 };
 
         my $wprefix = $p->writer_prefix;
         my $bprefix = $p->builder_prefix;
@@ -305,7 +311,7 @@ __END__
 
 =encoding utf-8
 
-=for :stopwords Chris Weyl GitHub attribute's isa one's rwp
+=for :stopwords Chris Weyl GitHub attribute's isa one's rwp SUBTYPING
 
 =head1 NAME
 
@@ -313,7 +319,7 @@ MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 =head1 VERSION
 
-This document describes version 0.018 of MooseX::AttributeShortcuts - released January 09, 2013 as part of MooseX-AttributeShortcuts.
+This document describes version 0.019 of MooseX::AttributeShortcuts - released April 20, 2013 as part of MooseX-AttributeShortcuts.
 
 =head1 SYNOPSIS
 
@@ -510,7 +516,7 @@ e.g., in your class,
 
 =head2 isa => ..., constraint => sub { ... }
 
-Specifying the constraint option with a coderef will cause a new type
+Specifying the constraint option with a coderef will cause a new subtype
 constraint to be created, with the parent type being the type specified in the
 C<isa> option and the constraint being the coderef supplied here.
 
@@ -545,6 +551,63 @@ file must exist:
 C<thinger> will correctly coerce the string "/etc/passwd" to a
 C<Path::Class:File>, and will only accept the coerced result as a value if
 the file exists.
+
+=head2 coerce => { Type => sub { ...coerce... }, ... }
+
+Specifying the coerce option with a hashref will cause a new subtype to be
+created and used (just as with the constraint option, above), with the
+specified coercions added to the list.  In the passed hashref, the keys are
+Moose types (well, strings resolvable to Moose types), and the values are
+coderefs that will coerce a given type to our type.
+
+    has bar => (
+        is     => 'ro',
+        isa    => 'Str',
+        coerce => {
+            Int    => sub { "$_"                       },
+            Object => sub { 'An instance of ' . ref $_ },
+        },
+    );
+
+=head1 ANONYMOUS SUBTYPING AND COERCION
+
+Note that we create new, anonymous subtypes whenever the constraint or
+coercion options are specified in such a way that the Shortcuts trait (this
+one) is invoked.  It's fully supported to use both constraint and coerce
+options at the same time.
+
+This facility is intended to assist with one-off type constraints and
+coercions.  It is not possible to deliberately reuse the subtypes we create,
+and if you find yourself using a particular isa / constraint / coerce option
+triplet in more than one place you should really think about creating a type
+that you can reuse.  L<MooseX::Types> provides the facilities to easily do
+this.
+
+=head1 SEE ALSO
+
+Please see those modules/websites for more information related to this module.
+
+=over 4
+
+=item *
+
+L<L<MooseX::CoercePerAttribute> provides our subtype coercion support|L<MooseX::CoercePerAttribute> provides our subtype coercion support>
+
+=back
+
+=head1 SOURCE
+
+The development version is on github at L<http://github.com/RsrchBoy/moosex-attributeshortcuts>
+and may be cloned from L<git://github.com/RsrchBoy/moosex-attributeshortcuts.git>
+
+=head1 BUGS
+
+Please report any bugs or feature requests on the bugtracker website
+https://github.com/RsrchBoy/moosex-attributeshortcuts/issues
+
+When submitting a bug or request, please include a test-file or a
+patch to an existing test-file that illustrates the bug or desired
+feature.
 
 =head1 AUTHOR
 

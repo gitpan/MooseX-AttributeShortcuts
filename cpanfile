@@ -2,6 +2,7 @@ requires "Moose" => "0";
 requires "Moose::Exporter" => "0";
 requires "Moose::Util::MetaRole" => "0";
 requires "Moose::Util::TypeConstraints" => "0";
+requires "MooseX::CoercePerAttribute" => "0.802";
 requires "MooseX::Role::Parameterized" => "0";
 requires "MooseX::Types::Common::String" => "0";
 requires "MooseX::Types::Moose" => "0";
@@ -14,12 +15,14 @@ on 'test' => sub {
   requires "File::Find" => "0";
   requires "File::Temp" => "0";
   requires "Moose::Role" => "0";
+  requires "Moose::Util" => "0";
   requires "MooseX::Types::Path::Class" => "0";
   requires "Path::Class" => "0";
   requires "Test::Fatal" => "0";
   requires "Test::Moose" => "0";
   requires "Test::Moose::More" => "0.018";
   requires "Test::More" => "0.88";
+  requires "aliased" => "0";
   requires "constant" => "0";
 };
 

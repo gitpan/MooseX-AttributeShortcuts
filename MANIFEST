@@ -21,6 +21,7 @@ t/06-role.t
 t/07-trigger.t
 t/anon-builder.t
 t/author-pod-spell.t
+t/constraint.t
 t/funcs.pm
 t/handles-metaclass.t
 t/inline_subtyping.t

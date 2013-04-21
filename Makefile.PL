@@ -11,18 +11,7 @@ use ExtUtils::MakeMaker 6.30;
 my %WriteMakefileArgs = (
   "ABSTRACT" => "Shorthand for common attribute options",
   "AUTHOR" => "Chris Weyl <cweyl\@alumni.drew.edu>",
-  "BUILD_REQUIRES" => {
-    "File::Find" => 0,
-    "File::Temp" => 0,
-    "Moose::Role" => 0,
-    "MooseX::Types::Path::Class" => 0,
-    "Path::Class" => 0,
-    "Test::Fatal" => 0,
-    "Test::Moose" => 0,
-    "Test::Moose::More" => "0.018",
-    "Test::More" => "0.88",
-    "constant" => 0
-  },
+  "BUILD_REQUIRES" => {},
   "CONFIGURE_REQUIRES" => {
     "ExtUtils::MakeMaker" => "6.30"
   },
@@ -35,6 +24,7 @@ my %WriteMakefileArgs = (
     "Moose::Exporter" => 0,
     "Moose::Util::MetaRole" => 0,
     "Moose::Util::TypeConstraints" => 0,
+    "MooseX::CoercePerAttribute" => "0.802",
     "MooseX::Role::Parameterized" => 0,
     "MooseX::Types::Common::String" => 0,
     "MooseX::Types::Moose" => 0,
@@ -42,12 +32,39 @@ my %WriteMakefileArgs = (
     "strict" => 0,
     "warnings" => 0
   },
-  "VERSION" => "0.018",
+  "TEST_REQUIRES" => {
+    "File::Find" => 0,
+    "File::Temp" => 0,
+    "Moose::Role" => 0,
+    "Moose::Util" => 0,
+    "MooseX::Types::Path::Class" => 0,
+    "Path::Class" => 0,
+    "Test::Fatal" => 0,
+    "Test::Moose" => 0,
+    "Test::Moose::More" => "0.018",
+    "Test::More" => "0.88",
+    "aliased" => 0,
+    "constant" => 0
+  },
+  "VERSION" => "0.019",
   "test" => {
     "TESTS" => "t/*.t"
   }
 );
 
+
+unless ( eval { ExtUtils::MakeMaker->VERSION(6.63_03) } ) {
+  my $tr = delete $WriteMakefileArgs{TEST_REQUIRES};
+  my $br = $WriteMakefileArgs{BUILD_REQUIRES};
+  for my $mod ( keys %$tr ) {
+    if ( exists $br->{$mod} ) {
+      $br->{$mod} = $tr->{$mod} if $tr->{$mod} > $br->{$mod};
+    }
+    else {
+      $br->{$mod} = $tr->{$mod};
+    }
+  }
+}
 
 unless ( eval { ExtUtils::MakeMaker->VERSION(6.56) } ) {
   my $br = delete $WriteMakefileArgs{BUILD_REQUIRES};
