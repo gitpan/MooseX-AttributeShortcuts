@@ -2,8 +2,8 @@ NAME
     MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 VERSION
-    This document describes version 0.019 of MooseX::AttributeShortcuts -
-    released April 20, 2013 as part of MooseX-AttributeShortcuts.
+    This document describes version 0.020 of MooseX::AttributeShortcuts -
+    released August 19, 2013 as part of MooseX-AttributeShortcuts.
 
 SYNOPSIS
         package Some::Class;
@@ -218,7 +218,7 @@ NEW ATTRIBUTE OPTIONS
     "Path::Class:File", and will only accept the coerced result as a value
     if the file exists.
 
-  coerce => { Type => sub { ...coerce... }, ... }
+  coerce => [ Type => sub { ...coerce... }, ... ]
     Specifying the coerce option with a hashref will cause a new subtype to
     be created and used (just as with the constraint option, above), with
     the specified coercions added to the list. In the passed hashref, the
@@ -228,10 +228,10 @@ NEW ATTRIBUTE OPTIONS
         has bar => (
             is     => 'ro',
             isa    => 'Str',
-            coerce => {
+            coerce => [
                 Int    => sub { "$_"                       },
                 Object => sub { 'An instance of ' . ref $_ },
-            },
+            ],
         );
 
 ANONYMOUS SUBTYPING AND COERCION
@@ -240,18 +240,20 @@ ANONYMOUS SUBTYPING AND COERCION
     (this one) is invoked. It's fully supported to use both constraint and
     coerce options at the same time.
 
-    This facility is intended to assist with one-off type constraints and
-    coercions. It is not possible to deliberately reuse the subtypes we
-    create, and if you find yourself using a particular isa / constraint /
-    coerce option triplet in more than one place you should really think
-    about creating a type that you can reuse. MooseX::Types provides the
-    facilities to easily do this.
+    This facility is intended to assist with the creation of one-off type
+    constraints and coercions. It is not possible to deliberately reuse the
+    subtypes we create, and if you find yourself using a particular isa /
+    constraint / coerce option triplet in more than one place you should
+    really think about creating a type that you can reuse. MooseX::Types
+    provides the facilities to easily do this.
 
 SEE ALSO
     Please see those modules/websites for more information related to this
     module.
 
-    *   MooseX::CoercePerAttribute provides our subtype coercion support
+    *   MooseX::CoercePerAttribute
+
+    *   MooseX::Types
 
 SOURCE
     The development version is on github at

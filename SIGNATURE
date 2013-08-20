@@ -1,5 +1,5 @@
 This file contains message digests of all files listed in MANIFEST,
-signed via the Module::Signature module, version 0.70.
+signed via the Module::Signature module, version 0.73.
 
 To verify the content in this distribution, first make sure you have
 Module::Signature installed, then type:
@@ -14,19 +14,21 @@ not run its Makefile.PL or Build.PL.
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-SHA1 e881b135dd38ae373876c4bc2f072fa16ccfc6d8 Changes
+SHA1 55ac697642a18dd7d974736a3d06fd531aa82382 .travis.yml
+SHA1 db2f3dfc89513ceed26e45a80a37be843e1e0236 Changes
 SHA1 0b16c282a427d2bf87e66bc839170a89d1f2f99f INSTALL
 SHA1 514760f01d379ad532c49a196f1c6f7912b65556 LICENSE
-SHA1 355a8b9629f93a050d2352dac9e514504be84a44 MANIFEST
-SHA1 4928bd5026ad4adc001729ee3d402bcaeee71968 META.json
-SHA1 77cb086a35f323b757aa63c36d0ae2d1bd693670 META.yml
-SHA1 07e8018941d3f9815f8138edb790d7292e6eb8b9 Makefile.PL
-SHA1 0cc4f625ef2e50f390c0abdfa67425aeffda0607 README
-SHA1 26b26a76645fdaf860f3bb351ef1452cbe11f79f cpanfile
-SHA1 93f518d031d8e4f11eeb4e3189dde29a63138659 dist.ini
-SHA1 26db611718aaa8f50928b33c63f455110e185321 lib/MooseX/AttributeShortcuts.pm
-SHA1 cfa8735632a8fd32c7bf89822305a921a5d2e366 t/00-compile.t
-SHA1 781a81f64f96d044db37932e79ef9903f7139c21 t/000-report-versions-tiny.t
+SHA1 379aa9a82cae34666f997e9a82ab7294906994eb MANIFEST
+SHA1 4720009889a2ad96e978b13d8edb6c615176bbd3 META.json
+SHA1 bedbc19fb0ad36bd2f4cbb1ede8ed505b58355fb META.yml
+SHA1 c1b8dd586f42ae33de45c6a2d472c8166828f89b Makefile.PL
+SHA1 53789e1ddeee649ecbcd099165164d48f535f60f README
+SHA1 dc282a46469833795ebbcd16fe45df2ea4ba56be cpanfile
+SHA1 5dafee4fc2c3642d0de8db57ec01d89d67fa5979 dist.ini
+SHA1 0b99a30c35e75909f2d3f7e743233f6c977e90b2 lib/MooseX/AttributeShortcuts.pm
+SHA1 4a8aed1e7b40ba08b0f7db3b7d961b95e62de3db t/00-check-deps.t
+SHA1 34a695de129f1eabb8b4ecd4c384508de40ae628 t/00-compile.t
+SHA1 d3e96b8fd98cb5d00060671ab46e220914f0e5c9 t/000-report-versions-tiny.t
 SHA1 b201b29194c8e2d174032993fbf9b989d204943c t/01-basic.t
 SHA1 feb9ac405e94777b2eccb564c75e81b303877592 t/02-parameterized.t
 SHA1 8b3de3014b22392c176c297ec6169376b4c7d080 t/03-lazy.t
@@ -35,7 +37,7 @@ SHA1 dcdac8f250e53b097c3727c6d4e5ccf2d7512277 t/05-extend.t
 SHA1 aeead510300b711df372bf0c026a60099d330927 t/06-role.t
 SHA1 141674978f422f7ae85a333e45b6984fdad9a1e8 t/07-trigger.t
 SHA1 2983277e0687e4cf8119b46779afb8b11b3d6329 t/anon-builder.t
-SHA1 b4a4275629d707496886c1fae936f34be597fc9f t/author-pod-spell.t
+SHA1 bd436c01a0952ddc73e4c09951beb938ac3d11b1 t/author-pod-spell.t
 SHA1 8b2fdc9e7371daaa41c49418e0d4d5a91a1b4c06 t/constraint.t
 SHA1 0693757ec019aebd05fc427a757294136889cf74 t/funcs.pm
 SHA1 2a3a2473622b9bd48532a52cfb1aafe72a0d34af t/handles-metaclass.t
@@ -45,6 +47,7 @@ SHA1 1f404d2af0d38f521691a6154e35de264d9ab3a0 t/inline_typing.t
 SHA1 9c3627ff37f4fd5bddc34bf46cf3359eaf76a060 t/release-consistent-version.t
 SHA1 a032c41ef6887fab1b900669c2d304fab46680e2 t/release-eol.t
 SHA1 0c566db92a9f12450c1e962d885634aa2cf1e8ca t/release-has-version.t
+SHA1 e9271010a2cf99a4a337909911806bb3a51aa985 t/release-minimum-version.t
 SHA1 4953bba5de90d892df5886383ac42c42c167d9d9 t/release-no-smart-comments.t
 SHA1 455d1dd1867212a665ad5ea4126b572411de300c t/release-no-tabs.t
 SHA1 e9e8e7e3e707ce9bd2046a7dd3817cd5555e8874 t/release-pod-coverage.t
@@ -53,11 +56,11 @@ SHA1 7ff128eaa77cb3639c774c44cf3e0128d691d480 t/release-pod-syntax.t
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.11 (GNU/Linux)
 
-iQEcBAEBAgAGBQJRc3AGAAoJEOd5N1CvIgQkkvgH/ig88a9qKTSyzk2jcoTHTnUE
-phZM4PAq2WlaJ9ZsRA3CtctnQG0azc/c6wdsS55Mfkr+SdLPtz9aG/nkxozqM8Hw
-WVl+KTRorR238h7LSLwUhc485WYb1QyAgLzWTas5PfxfMsRry4SCk8H+NBsu4C1B
-XetU3634aP7lc4AAYTTCZv6jVbh/QqE1hF+HeAZByCesa6eeP3v+z6HT/8Sx0m5U
-0OZtmzI1RYrklamls1HC19q0fT40iJ/2YMHKbS/H7kARRsoQq4XLUp7dUi1Ft6ZL
-XmnH1VKHupCDNrXqrIiY8iTWPXaW9gPCL4u2NQ5qqtbbf2MoRP8WPsFzEY16Ln0=
-=kWDe
+iQEcBAEBAgAGBQJSEvW9AAoJEOd5N1CvIgQk/IgIAIJhMZW0soTfEJVyhlz+pLPY
+n9qxkTrXt9GBXH/+bJqiNqzGbDgI7uUt9oHh88vuJ3LyX4F/+WrSw4FrxWD5vBXZ
+pdErAyWYpycR1uTHJVc9gsIChWFwa3waM+0T5SJFEwu/N7b7hCjJzVoE3hhjVz11
+Aa1PwV18P40P3z3qBdBFcujs+XMybdshJ8QdXIKNlMH8nD68LycxRnyzsy+f8x9C
+o2xva+E7N9UHAbE5EmR8Sx5wsKFjxdFjQRbAFu9sjNhHZPZhAZvCHyQRnpQKzmpP
+gp2sD60VvmoVHMkg2MISghlwMzORSpSXY2gDhprCrEFtolzmZ9q/6Xj07xH/Q9I=
+=ZXtH
 -----END PGP SIGNATURE-----

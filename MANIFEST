@@ -1,3 +1,4 @@
+.travis.yml
 Changes
 INSTALL
 LICENSE
@@ -10,6 +11,7 @@ SIGNATURE
 cpanfile
 dist.ini
 lib/MooseX/AttributeShortcuts.pm
+t/00-check-deps.t
 t/00-compile.t
 t/000-report-versions-tiny.t
 t/01-basic.t
@@ -30,6 +32,7 @@ t/inline_typing.t
 t/release-consistent-version.t
 t/release-eol.t
 t/release-has-version.t
+t/release-minimum-version.t
 t/release-no-smart-comments.t
 t/release-no-tabs.t
 t/release-pod-coverage.t

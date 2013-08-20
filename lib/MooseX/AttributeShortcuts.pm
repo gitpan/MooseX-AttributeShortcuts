@@ -8,11 +8,14 @@
 #   The GNU Lesser General Public License, Version 2.1, February 1999
 #
 package MooseX::AttributeShortcuts;
-# git description: 0.018-7-gdc99f4b
-
-{
-  $MooseX::AttributeShortcuts::VERSION = '0.019';
+BEGIN {
+  $MooseX::AttributeShortcuts::AUTHORITY = 'cpan:RSRCHBOY';
 }
+{
+  $MooseX::AttributeShortcuts::VERSION = '0.020';
+}
+# git description: 0.019-2-g7fdd318
+
 
 # ABSTRACT: Shorthand for common attribute options
 
@@ -31,11 +34,14 @@ use Moose::Util::TypeConstraints;
 
 {
     package MooseX::AttributeShortcuts::Trait::Attribute;
-# git description: 0.018-7-gdc99f4b
-
-{
-  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.019';
+BEGIN {
+  $MooseX::AttributeShortcuts::Trait::Attribute::AUTHORITY = 'cpan:RSRCHBOY';
 }
+{
+  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.020';
+}
+# git description: 0.019-2-g7fdd318
+
     use namespace::autoclean;
     use MooseX::Role::Parameterized;
     use Moose::Util::TypeConstraints qw{ class_type role_type enum };
@@ -57,7 +63,7 @@ use Moose::Util::TypeConstraints;
     role {
         my $p = shift @_;
 
-        with 'MooseX::CoercePerAttribute' => { -version => 0.802 };
+        with 'MooseX::CoercePerAttribute' => { -version => '1.000' };
 
         my $wprefix = $p->writer_prefix;
         my $bprefix = $p->builder_prefix;
@@ -294,10 +300,12 @@ sub init_meta {
         ;
 
     Moose::Util::MetaRole::apply_metaroles(
-        for             => $for_class,
-        class_metaroles => { attribute         => [ $role ] },
         # TODO add attribute trait here to create builder method if found
-        role_metaroles  => { applied_attribute => [ $role ] },
+        for                          => $for_class,
+        class_metaroles              => { attribute         => [ $role ] },
+        role_metaroles               => { applied_attribute => [ $role ] },
+        parameter_metaroles          => { applied_attribute => [ $role ] },
+        parameterized_role_metaroles => { applied_attribute => [ $role ] },
     );
 
     return Class::MOP::class_of($for_class);
@@ -319,7 +327,7 @@ MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 =head1 VERSION
 
-This document describes version 0.019 of MooseX::AttributeShortcuts - released April 20, 2013 as part of MooseX-AttributeShortcuts.
+This document describes version 0.020 of MooseX::AttributeShortcuts - released August 19, 2013 as part of MooseX-AttributeShortcuts.
 
 =head1 SYNOPSIS
 
@@ -552,7 +560,7 @@ C<thinger> will correctly coerce the string "/etc/passwd" to a
 C<Path::Class:File>, and will only accept the coerced result as a value if
 the file exists.
 
-=head2 coerce => { Type => sub { ...coerce... }, ... }
+=head2 coerce => [ Type => sub { ...coerce... }, ... ]
 
 Specifying the coerce option with a hashref will cause a new subtype to be
 created and used (just as with the constraint option, above), with the
@@ -563,10 +571,10 @@ coderefs that will coerce a given type to our type.
     has bar => (
         is     => 'ro',
         isa    => 'Str',
-        coerce => {
+        coerce => [
             Int    => sub { "$_"                       },
             Object => sub { 'An instance of ' . ref $_ },
-        },
+        ],
     );
 
 =head1 ANONYMOUS SUBTYPING AND COERCION
@@ -576,12 +584,12 @@ coercion options are specified in such a way that the Shortcuts trait (this
 one) is invoked.  It's fully supported to use both constraint and coerce
 options at the same time.
 
-This facility is intended to assist with one-off type constraints and
-coercions.  It is not possible to deliberately reuse the subtypes we create,
-and if you find yourself using a particular isa / constraint / coerce option
-triplet in more than one place you should really think about creating a type
-that you can reuse.  L<MooseX::Types> provides the facilities to easily do
-this.
+This facility is intended to assist with the creation of one-off type
+constraints and coercions.  It is not possible to deliberately reuse the
+subtypes we create, and if you find yourself using a particular isa /
+constraint / coerce option triplet in more than one place you should really
+think about creating a type that you can reuse.  L<MooseX::Types> provides
+the facilities to easily do this.
 
 =head1 SEE ALSO
 
@@ -591,7 +599,11 @@ Please see those modules/websites for more information related to this module.
 
 =item *
 
-L<L<MooseX::CoercePerAttribute> provides our subtype coercion support|L<MooseX::CoercePerAttribute> provides our subtype coercion support>
+L<MooseX::CoercePerAttribute|MooseX::CoercePerAttribute>
+
+=item *
+
+L<MooseX::Types|MooseX::Types>
 
 =back
 

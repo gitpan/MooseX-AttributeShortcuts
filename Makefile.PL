@@ -24,7 +24,7 @@ my %WriteMakefileArgs = (
     "Moose::Exporter" => 0,
     "Moose::Util::MetaRole" => 0,
     "Moose::Util::TypeConstraints" => 0,
-    "MooseX::CoercePerAttribute" => "0.802",
+    "MooseX::CoercePerAttribute" => "1.000",
     "MooseX::Role::Parameterized" => 0,
     "MooseX::Types::Common::String" => 0,
     "MooseX::Types::Moose" => 0,
@@ -33,20 +33,21 @@ my %WriteMakefileArgs = (
     "warnings" => 0
   },
   "TEST_REQUIRES" => {
-    "File::Find" => 0,
-    "File::Temp" => 0,
+    "Capture::Tiny" => 0,
     "Moose::Role" => 0,
     "Moose::Util" => 0,
     "MooseX::Types::Path::Class" => 0,
     "Path::Class" => 0,
+    "Test::CheckDeps" => "0.006",
     "Test::Fatal" => 0,
     "Test::Moose" => 0,
     "Test::Moose::More" => "0.018",
-    "Test::More" => "0.88",
+    "Test::More" => "0.94",
     "aliased" => 0,
+    "blib" => 0,
     "constant" => 0
   },
-  "VERSION" => "0.019",
+  "VERSION" => "0.020",
   "test" => {
     "TESTS" => "t/*.t"
   }
