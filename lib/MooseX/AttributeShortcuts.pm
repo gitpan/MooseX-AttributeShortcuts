@@ -12,9 +12,9 @@ BEGIN {
   $MooseX::AttributeShortcuts::AUTHORITY = 'cpan:RSRCHBOY';
 }
 {
-  $MooseX::AttributeShortcuts::VERSION = '0.020';
+  $MooseX::AttributeShortcuts::VERSION = '0.020_01';
 }
-# git description: 0.019-2-g7fdd318
+# git description: 0.020-2-g80a8db2
 
 
 # ABSTRACT: Shorthand for common attribute options
@@ -29,18 +29,15 @@ use Moose::Exporter;
 use Moose::Util::MetaRole;
 use Moose::Util::TypeConstraints;
 
-# debug...
-#use Smart::Comments;
-
 {
     package MooseX::AttributeShortcuts::Trait::Attribute;
 BEGIN {
   $MooseX::AttributeShortcuts::Trait::Attribute::AUTHORITY = 'cpan:RSRCHBOY';
 }
 {
-  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.020';
+  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.020_01';
 }
-# git description: 0.019-2-g7fdd318
+# git description: 0.020-2-g80a8db2
 
     use namespace::autoclean;
     use MooseX::Role::Parameterized;
@@ -63,7 +60,15 @@ BEGIN {
     role {
         my $p = shift @_;
 
-        with 'MooseX::CoercePerAttribute' => { -version => '1.000' };
+        with 'MooseX::CoercePerAttribute' => { -version  => '1.000' };
+
+        {
+            # XXX: This is evil, and completely temporary until we get full
+            # per-attribute coercion properly integrated with MXAS.
+            my $warn_handler;
+            before _process_coerce_option => sub { $warn_handler  = $SIG{__WARN__}; $SIG{__WARN__} = sub {} };
+            after  _process_coerce_option => sub { $SIG{__WARN__} = $warn_handler                           };
+        }
 
         my $wprefix = $p->writer_prefix;
         my $bprefix = $p->builder_prefix;
@@ -327,7 +332,7 @@ MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 =head1 VERSION
 
-This document describes version 0.020 of MooseX::AttributeShortcuts - released August 19, 2013 as part of MooseX-AttributeShortcuts.
+This document describes version 0.020_01 of MooseX::AttributeShortcuts - released August 26, 2013 as part of MooseX-AttributeShortcuts.
 
 =head1 SYNOPSIS
 

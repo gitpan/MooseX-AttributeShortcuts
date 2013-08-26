@@ -33,7 +33,9 @@ my %WriteMakefileArgs = (
     "warnings" => 0
   },
   "TEST_REQUIRES" => {
-    "Capture::Tiny" => 0,
+    "File::Spec" => 0,
+    "IO::Handle" => 0,
+    "IPC::Open3" => 0,
     "Moose::Role" => 0,
     "Moose::Util" => 0,
     "MooseX::Types::Path::Class" => 0,
@@ -44,10 +46,9 @@ my %WriteMakefileArgs = (
     "Test::Moose::More" => "0.018",
     "Test::More" => "0.94",
     "aliased" => 0,
-    "blib" => 0,
     "constant" => 0
   },
-  "VERSION" => "0.020",
+  "VERSION" => "0.020_01",
   "test" => {
     "TESTS" => "t/*.t"
   }
