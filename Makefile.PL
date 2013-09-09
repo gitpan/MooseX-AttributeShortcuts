@@ -24,7 +24,6 @@ my %WriteMakefileArgs = (
     "Moose::Exporter" => 0,
     "Moose::Util::MetaRole" => 0,
     "Moose::Util::TypeConstraints" => 0,
-    "MooseX::CoercePerAttribute" => "1.000",
     "MooseX::Role::Parameterized" => 0,
     "MooseX::Types::Common::String" => 0,
     "MooseX::Types::Moose" => 0,
@@ -33,7 +32,6 @@ my %WriteMakefileArgs = (
     "warnings" => 0
   },
   "TEST_REQUIRES" => {
-    "File::Spec" => 0,
     "IO::Handle" => 0,
     "IPC::Open3" => 0,
     "Moose::Role" => 0,
@@ -45,10 +43,9 @@ my %WriteMakefileArgs = (
     "Test::Moose" => 0,
     "Test::Moose::More" => "0.018",
     "Test::More" => "0.94",
-    "aliased" => 0,
     "constant" => 0
   },
-  "VERSION" => "0.020_01",
+  "VERSION" => "0.021",
   "test" => {
     "TESTS" => "t/*.t"
   }

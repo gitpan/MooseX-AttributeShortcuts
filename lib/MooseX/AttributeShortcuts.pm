@@ -12,9 +12,9 @@ BEGIN {
   $MooseX::AttributeShortcuts::AUTHORITY = 'cpan:RSRCHBOY';
 }
 {
-  $MooseX::AttributeShortcuts::VERSION = '0.020_01';
+  $MooseX::AttributeShortcuts::VERSION = '0.021';
 }
-# git description: 0.020-2-g80a8db2
+# git description: 0.020_01-2-gfe62b52
 
 
 # ABSTRACT: Shorthand for common attribute options
@@ -35,17 +35,17 @@ BEGIN {
   $MooseX::AttributeShortcuts::Trait::Attribute::AUTHORITY = 'cpan:RSRCHBOY';
 }
 {
-  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.020_01';
+  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.021';
 }
-# git description: 0.020-2-g80a8db2
+# git description: 0.020_01-2-gfe62b52
 
     use namespace::autoclean;
     use MooseX::Role::Parameterized;
-    use Moose::Util::TypeConstraints qw{ class_type role_type enum };
+    use Moose::Util::TypeConstraints  ':all';
     use MooseX::Types::Moose          ':all';
     use MooseX::Types::Common::String ':all';
 
-    sub _find_or_create_isa_type_constraint { goto \&Moose::Util::TypeConstraints::find_or_create_isa_type_constraint }
+    sub _acquire_isa_tc { goto \&Moose::Util::TypeConstraints::find_or_create_isa_type_constraint }
 
     parameter writer_prefix  => (isa => NonEmptySimpleStr, default => '_set_');
     parameter builder_prefix => (isa => NonEmptySimpleStr, default => '_build_');
@@ -59,16 +59,6 @@ BEGIN {
 
     role {
         my $p = shift @_;
-
-        with 'MooseX::CoercePerAttribute' => { -version  => '1.000' };
-
-        {
-            # XXX: This is evil, and completely temporary until we get full
-            # per-attribute coercion properly integrated with MXAS.
-            my $warn_handler;
-            before _process_coerce_option => sub { $warn_handler  = $SIG{__WARN__}; $SIG{__WARN__} = sub {} };
-            after  _process_coerce_option => sub { $SIG{__WARN__} = $warn_handler                           };
-        }
 
         my $wprefix = $p->writer_prefix;
         my $bprefix = $p->builder_prefix;
@@ -144,6 +134,8 @@ BEGIN {
                 if $_has->('isa_enum');
 
             ### the pretty business of on-the-fly subtyping...
+            my $our_type;
+
             if ($_has->('constraint')) {
 
                 # check for errors...
@@ -157,22 +149,52 @@ BEGIN {
                     if $_ref->('constraint') eq 'CODE';
 
                 # stash our original option away and construct our new one
-                my $isa = $options->{original_isa} = $_opt->('isa');
-                my $isa_tc = _find_or_create_isa_type_constraint($isa);
-                my $new_tc = $isa_tc->create_child_type(@opts);
+                my $isa     = $options->{original_isa} = $_opt->('isa');
+                $our_type ||= _acquire_isa_tc($isa)->create_child_type(@opts);
+            }
 
-                if ($isa_tc->has_coercion && $_opt->('coerce') eq "1") {
+            # "fix" the case of the hashref....  *sigh*
+            # FIXME TODO check for potential conflicts and warn!
+            $options->{coerce} = [ %{ $options->{coerce} } ]
+                if $_ref->('coerce') eq 'HASH';
+
+            if ($_ref->('coerce') eq 'ARRAY') {
+
+                ### must be type => sub { ... } pairs...
+                my @coercions = @{ $_opt->('coerce') };
+                confess 'You must specify an "isa" when declaring "coercion"'
+                    unless $_has->('isa');
+                confess 'coercion array must be in pairs!'
+                    if @coercions % 2;
+                confess 'must define at least one coercion pair!'
+                    unless @coercions > 0;
+
+                my $our_coercion = Moose::Meta::TypeCoercion->new;
+                $our_type ||= _acquire_isa_tc($_opt->('isa'))->create_child_type;
+
+                $our_coercion->add_type_coercions(@coercions);
+                $our_type->coercion($our_coercion);
+                $options->{coerce} = 1;
+            }
+
+            if ($our_type && !$our_type->has_coercion) {
+
+                my $isa_type = _acquire_isa_tc($_opt->('isa'));
+
+                if ($isa_type->has_coercion && !$_ref->('coerce') && $_opt->('coerce') eq "1") {
 
                     # create our coercion as a copy of the parent
-                    $new_tc->coercion(Moose::Meta::TypeCoercion->new(
-                        type_constraint   => $new_tc,
-                        type_coercion_map => $isa_tc->coercion->type_coercion_map,
+                    $our_type->coercion(Moose::Meta::TypeCoercion->new(
+                        type_constraint   => $our_type,
+                        type_coercion_map => [ @{ $isa_type->coercion->type_coercion_map } ],
                     ));
                 }
 
-                # fin constraint mucking....
-                $options->{isa} = $new_tc;
             }
+
+            # fin constraint mucking....
+            do { $options->{original_isa} = $_opt->('isa'); $options->{isa} = $our_type }
+                if $our_type;
 
             if ($options->{lazy_build} && $options->{lazy_build} eq 'private') {
 
@@ -324,7 +346,7 @@ __END__
 
 =encoding utf-8
 
-=for :stopwords Chris Weyl GitHub attribute's isa one's rwp SUBTYPING
+=for :stopwords Chris Weyl GitHub attribute's isa one's rwp SUBTYPING foo
 
 =head1 NAME
 
@@ -332,7 +354,7 @@ MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 =head1 VERSION
 
-This document describes version 0.020_01 of MooseX::AttributeShortcuts - released August 26, 2013 as part of MooseX-AttributeShortcuts.
+This document describes version 0.021 of MooseX::AttributeShortcuts - released September 08, 2013 as part of MooseX-AttributeShortcuts.
 
 =head1 SYNOPSIS
 
@@ -594,17 +616,14 @@ constraints and coercions.  It is not possible to deliberately reuse the
 subtypes we create, and if you find yourself using a particular isa /
 constraint / coerce option triplet in more than one place you should really
 think about creating a type that you can reuse.  L<MooseX::Types> provides
-the facilities to easily do this.
+the facilities to easily do this, or even a simple L<constant> definition at
+the package level with an anonymous type stashed away for local use.
 
 =head1 SEE ALSO
 
 Please see those modules/websites for more information related to this module.
 
 =over 4
-
-=item *
-
-L<MooseX::CoercePerAttribute|MooseX::CoercePerAttribute>
 
 =item *
 

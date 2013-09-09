@@ -49,7 +49,6 @@ sub pmver {
 }
 
 eval { $v .= pmver('ExtUtils::MakeMaker','6.30') };
-eval { $v .= pmver('File::Spec','any version') };
 eval { $v .= pmver('IO::Handle','any version') };
 eval { $v .= pmver('IPC::Open3','any version') };
 eval { $v .= pmver('Moose','any version') };
@@ -58,7 +57,6 @@ eval { $v .= pmver('Moose::Role','any version') };
 eval { $v .= pmver('Moose::Util','any version') };
 eval { $v .= pmver('Moose::Util::MetaRole','any version') };
 eval { $v .= pmver('Moose::Util::TypeConstraints','any version') };
-eval { $v .= pmver('MooseX::CoercePerAttribute','1.000') };
 eval { $v .= pmver('MooseX::Role::Parameterized','any version') };
 eval { $v .= pmver('MooseX::Types::Common::String','any version') };
 eval { $v .= pmver('MooseX::Types::Moose','any version') };
@@ -72,7 +70,6 @@ eval { $v .= pmver('Test::Moose::More','0.018') };
 eval { $v .= pmver('Test::More','0.94') };
 eval { $v .= pmver('Test::Pod','1.41') };
 eval { $v .= pmver('Test::Pod::Coverage','1.08') };
-eval { $v .= pmver('aliased','any version') };
 eval { $v .= pmver('constant','any version') };
 eval { $v .= pmver('namespace::autoclean','any version') };
 eval { $v .= pmver('strict','any version') };

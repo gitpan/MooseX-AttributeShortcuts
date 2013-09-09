@@ -26,6 +26,7 @@ t/author-pod-spell.t
 t/constraint.t
 t/funcs.pm
 t/handles-metaclass.t
+t/inline_coercion-back-compat.t
 t/inline_coercion.t
 t/inline_subtyping.t
 t/inline_subtyping_with_coercion.t
