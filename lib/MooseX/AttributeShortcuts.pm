@@ -12,9 +12,9 @@ BEGIN {
   $MooseX::AttributeShortcuts::AUTHORITY = 'cpan:RSRCHBOY';
 }
 {
-  $MooseX::AttributeShortcuts::VERSION = '0.021';
+  $MooseX::AttributeShortcuts::VERSION = '0.022';
 }
-# git description: 0.020_01-2-gfe62b52
+# git description: 0.021-0-g9f820bc
 
 
 # ABSTRACT: Shorthand for common attribute options
@@ -35,9 +35,9 @@ BEGIN {
   $MooseX::AttributeShortcuts::Trait::Attribute::AUTHORITY = 'cpan:RSRCHBOY';
 }
 {
-  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.021';
+  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.022';
 }
-# git description: 0.020_01-2-gfe62b52
+# git description: 0.021-0-g9f820bc
 
     use namespace::autoclean;
     use MooseX::Role::Parameterized;
@@ -354,7 +354,7 @@ MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 =head1 VERSION
 
-This document describes version 0.021 of MooseX::AttributeShortcuts - released September 08, 2013 as part of MooseX-AttributeShortcuts.
+This document describes version 0.022 of MooseX::AttributeShortcuts - released September 29, 2013 as part of MooseX-AttributeShortcuts.
 
 =head1 SYNOPSIS
 

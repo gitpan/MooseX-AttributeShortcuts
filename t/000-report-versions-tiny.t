@@ -49,6 +49,7 @@ sub pmver {
 }
 
 eval { $v .= pmver('ExtUtils::MakeMaker','6.30') };
+eval { $v .= pmver('File::Spec','any version') };
 eval { $v .= pmver('IO::Handle','any version') };
 eval { $v .= pmver('IPC::Open3','any version') };
 eval { $v .= pmver('Moose','any version') };
@@ -63,11 +64,12 @@ eval { $v .= pmver('MooseX::Types::Moose','any version') };
 eval { $v .= pmver('MooseX::Types::Path::Class','any version') };
 eval { $v .= pmver('Path::Class','any version') };
 eval { $v .= pmver('Pod::Coverage::TrustPod','any version') };
-eval { $v .= pmver('Test::CheckDeps','0.006') };
+eval { $v .= pmver('Test::CheckDeps','0.007') };
 eval { $v .= pmver('Test::Fatal','any version') };
 eval { $v .= pmver('Test::Moose','any version') };
 eval { $v .= pmver('Test::Moose::More','0.018') };
 eval { $v .= pmver('Test::More','0.94') };
+eval { $v .= pmver('Test::NoTabs','any version') };
 eval { $v .= pmver('Test::Pod','1.41') };
 eval { $v .= pmver('Test::Pod::Coverage','1.08') };
 eval { $v .= pmver('constant','any version') };

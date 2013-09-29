@@ -32,20 +32,21 @@ my %WriteMakefileArgs = (
     "warnings" => 0
   },
   "TEST_REQUIRES" => {
+    "File::Spec" => 0,
     "IO::Handle" => 0,
     "IPC::Open3" => 0,
     "Moose::Role" => 0,
     "Moose::Util" => 0,
     "MooseX::Types::Path::Class" => 0,
     "Path::Class" => 0,
-    "Test::CheckDeps" => "0.006",
+    "Test::CheckDeps" => "0.007",
     "Test::Fatal" => 0,
     "Test::Moose" => 0,
     "Test::Moose::More" => "0.018",
     "Test::More" => "0.94",
     "constant" => 0
   },
-  "VERSION" => "0.021",
+  "VERSION" => "0.022",
   "test" => {
     "TESTS" => "t/*.t"
   }
