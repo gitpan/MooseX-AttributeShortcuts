@@ -11,11 +11,8 @@ package MooseX::AttributeShortcuts;
 BEGIN {
   $MooseX::AttributeShortcuts::AUTHORITY = 'cpan:RSRCHBOY';
 }
-{
-  $MooseX::AttributeShortcuts::VERSION = '0.022';
-}
-# git description: 0.021-0-g9f820bc
-
+# git description: 0.022-7-g4a1fc05
+$MooseX::AttributeShortcuts::VERSION = '0.023';
 
 # ABSTRACT: Shorthand for common attribute options
 
@@ -34,11 +31,8 @@ use Moose::Util::TypeConstraints;
 BEGIN {
   $MooseX::AttributeShortcuts::Trait::Attribute::AUTHORITY = 'cpan:RSRCHBOY';
 }
-{
-  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.022';
-}
-# git description: 0.021-0-g9f820bc
-
+# git description: 0.022-7-g4a1fc05
+$MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.023';
     use namespace::autoclean;
     use MooseX::Role::Parameterized;
     use Moose::Util::TypeConstraints  ':all';
@@ -132,6 +126,20 @@ BEGIN {
                 if $_has->('isa_role');
             $options->{isa} = enum(delete $options->{isa_enum})
                 if $_has->('isa_enum');
+
+            # aka: isa => class_type(...)
+            if ($_has->('isa_instance_of')) {
+
+                if ($_has->('isa')) {
+
+                    $class->throw_error(
+                        q{Cannot use 'isa_instance_of' and 'isa' together for attribute }
+                        . $_opt->('definition_context')->{package} . '::' . $name
+                    );
+                }
+
+                $options->{isa} = class_type(delete $options->{isa_instance_of});
+            }
 
             ### the pretty business of on-the-fly subtyping...
             my $our_type;
@@ -312,10 +320,10 @@ sub init_meta {
     die "Class $for_class has no metaclass!"
         unless Class::MOP::class_of($for_class);
 
-    # If we're given paramaters to pass on to construct a role with, we build
+    # If we're given parameters to pass on to construct a role with, we build
     # it out here rather than pass them on and allowing apply_metaroles() to
-    # handle it, as there are Very Loud Warnings about how paramatized roles
-    # are non-cachable when generated on the fly.
+    # handle it, as there are Very Loud Warnings about how parameterized roles
+    # are non-cacheable when generated on the fly.
 
     ### $params
     my $role
@@ -344,9 +352,10 @@ __END__
 
 =pod
 
-=encoding utf-8
+=encoding UTF-8
 
-=for :stopwords Chris Weyl GitHub attribute's isa one's rwp SUBTYPING foo
+=for :stopwords Chris Weyl David Steinbrunner <dsteinbrunner@pobox.com> GitHub attribute's
+isa one's rwp SUBTYPING foo
 
 =head1 NAME
 
@@ -354,7 +363,7 @@ MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 =head1 VERSION
 
-This document describes version 0.022 of MooseX::AttributeShortcuts - released September 29, 2013 as part of MooseX-AttributeShortcuts.
+This document describes version 0.023 of MooseX::AttributeShortcuts - released April 04, 2014 as part of MooseX-AttributeShortcuts.
 
 =head1 SYNOPSIS
 
@@ -549,6 +558,24 @@ e.g., in your class,
     has foo => (is => 'ro', builder => '_build_foo');
     sub _build_foo { 'bar!' }
 
+=head2 isa_instance_of => ...
+
+Given a package name, this option will create an C<isa> type constraint that
+requires the value of the attribute be an instance of the class (or a
+descendant class) given.  That is,
+
+    has foo => (is => 'ro', isa_instance_of => 'SomeThing');
+
+...is effectively the same as:
+
+    use Moose::TypeConstraints 'class_type';
+    has foo => (
+        is  => 'ro',
+        isa => class_type('SomeThing'),
+    );
+
+...but a touch less awkward.
+
 =head2 isa => ..., constraint => sub { ... }
 
 Specifying the constraint option with a coderef will cause a new subtype
@@ -648,6 +675,10 @@ feature.
 =head1 AUTHOR
 
 Chris Weyl <cweyl@alumni.drew.edu>
+
+=head1 CONTRIBUTOR
+
+David Steinbrunner <dsteinbrunner@pobox.com>
 
 =head1 COPYRIGHT AND LICENSE
 
