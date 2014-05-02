@@ -24,13 +24,13 @@ t/06-role.t
 t/07-trigger.t
 t/anon-builder.t
 t/constraint.t
+t/deprecated/inline_typing.t
 t/funcs.pm
 t/handles-metaclass.t
 t/inline_coercion-back-compat.t
 t/inline_coercion.t
 t/inline_subtyping.t
 t/inline_subtyping_with_coercion.t
-t/inline_typing.t
 t/isa_instance_of.t
 xt/author/pod-spell.t
 xt/release/consistent-version.t

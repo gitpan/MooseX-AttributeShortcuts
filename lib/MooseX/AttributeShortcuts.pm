@@ -11,8 +11,8 @@ package MooseX::AttributeShortcuts;
 BEGIN {
   $MooseX::AttributeShortcuts::AUTHORITY = 'cpan:RSRCHBOY';
 }
-# git description: 0.022-7-g4a1fc05
-$MooseX::AttributeShortcuts::VERSION = '0.023';
+# git description: 0.023-5-gff63e05
+$MooseX::AttributeShortcuts::VERSION = '0.024';
 
 # ABSTRACT: Shorthand for common attribute options
 
@@ -31,13 +31,21 @@ use Moose::Util::TypeConstraints;
 BEGIN {
   $MooseX::AttributeShortcuts::Trait::Attribute::AUTHORITY = 'cpan:RSRCHBOY';
 }
-# git description: 0.022-7-g4a1fc05
-$MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.023';
+# git description: 0.023-5-gff63e05
+$MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.024';
     use namespace::autoclean;
     use MooseX::Role::Parameterized;
     use Moose::Util::TypeConstraints  ':all';
     use MooseX::Types::Moose          ':all';
     use MooseX::Types::Common::String ':all';
+
+    use autobox::Core;
+    use autobox::Junctions;
+    use List::AllUtils 'any';
+
+    use Package::DeprecationManager -deprecations => {
+        'undocumented-isa-constraints' => '0.23',
+    };
 
     sub _acquire_isa_tc { goto \&Moose::Util::TypeConstraints::find_or_create_isa_type_constraint }
 
@@ -110,22 +118,22 @@ $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.023';
                 }
             }
 
-            # TODO isa_class - anon class_type generation
-            # TODO isa_role  - anon role_type generation
-            # TODO isa_enum  - anon enum generation
-            # TODO coerce_via - anon coercion (type -> anon subtype+coercion
+            if (any { $options->keys->any eq $_ } (qw{ isa_class isa_role isa_enum })) {
 
-            # XXX we also ignore conflicts here -- last in wins
-            #confess q{conflict 'isa' and 'isa_class' or 'isa_role'}
-                #if $_has->('isa')
+                # (more than) fair warning...
+                deprecated(
+                    feature => 'undocumented-isa-constraints',
+                    message => 'Naughty! isa_class, isa_role, and isa_enum will be removed on or after 01 July 2014!',
+                );
 
-            # XXX undocumented -- not sure this is a great idea
-            $options->{isa} = class_type(delete $options->{isa_class})
-                if $_has->('isa_class');
-            $options->{isa} = role_type(delete $options->{isa_role})
-                if $_has->('isa_role');
-            $options->{isa} = enum(delete $options->{isa_enum})
-                if $_has->('isa_enum');
+                # XXX undocumented -- not sure this is a great idea
+                $options->{isa} = class_type(delete $options->{isa_class})
+                    if $_has->('isa_class');
+                $options->{isa} = role_type(delete $options->{isa_role})
+                    if $_has->('isa_role');
+                $options->{isa} = enum(delete $options->{isa_enum})
+                    if $_has->('isa_enum');
+            }
 
             # aka: isa => class_type(...)
             if ($_has->('isa_instance_of')) {
@@ -354,8 +362,10 @@ __END__
 
 =encoding UTF-8
 
-=for :stopwords Chris Weyl David Steinbrunner <dsteinbrunner@pobox.com> GitHub attribute's
-isa one's rwp SUBTYPING foo
+=for :stopwords Chris Weyl David Steinbrunner GitHub attribute's isa one's rwp SUBTYPING
+foo
+
+=for :stopwords Wishlist flattr flattr'ed gittip gittip'ed
 
 =head1 NAME
 
@@ -363,7 +373,7 @@ MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 =head1 VERSION
 
-This document describes version 0.023 of MooseX::AttributeShortcuts - released April 04, 2014 as part of MooseX-AttributeShortcuts.
+This document describes version 0.024 of MooseX::AttributeShortcuts - released May 02, 2014 as part of MooseX-AttributeShortcuts.
 
 =head1 SYNOPSIS
 
@@ -633,6 +643,8 @@ coderefs that will coerce a given type to our type.
 
 =head1 ANONYMOUS SUBTYPING AND COERCION
 
+    "Abusus non tollit usum."
+
 Note that we create new, anonymous subtypes whenever the constraint or
 coercion options are specified in such a way that the Shortcuts trait (this
 one) is invoked.  It's fully supported to use both constraint and coerce
@@ -660,8 +672,8 @@ L<MooseX::Types|MooseX::Types>
 
 =head1 SOURCE
 
-The development version is on github at L<http://github.com/RsrchBoy/moosex-attributeshortcuts>
-and may be cloned from L<git://github.com/RsrchBoy/moosex-attributeshortcuts.git>
+The development version is on github at L<http://https://github.com/RsrchBoy/moosex-attributeshortcuts>
+and may be cloned from L<git://https://github.com/RsrchBoy/moosex-attributeshortcuts.git>
 
 =head1 BUGS
 
@@ -675,6 +687,17 @@ feature.
 =head1 AUTHOR
 
 Chris Weyl <cweyl@alumni.drew.edu>
+
+=head2 SAYING THANKS IN A MATERIALISTIC WAY
+
+Please note B<I do not expect to be gittip'ed or flattr'ed for this work>,
+rather B<it is simply a very pleasant surprise>. I largely create and release
+works like this because I need them or I find it enjoyable; however, don't let
+that stop you giving me money if you feel like it ;)
+
+L<flattr this!|https://flattr.com/submit/auto?user_id=RsrchBoy&url=https%3A%2F%2Fgithub.com%2FRsrchBoy%2Fmoosex-attributeshortcuts&title=RsrchBoy's%20CPAN%20MooseX-AttributeShortcuts&tags=%22RsrchBoy's%20MooseX-AttributeShortcuts%20in%20the%20CPAN%22>
+L<gittip me!|https://www.gittip.com/RsrchBoy/>
+L<Amazon Wishlist|http://www.amazon.com/gp/registry/wishlist/3G2DQFPBA57L6>
 
 =head1 CONTRIBUTOR
 
