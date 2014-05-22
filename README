@@ -2,8 +2,8 @@ NAME
     MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 VERSION
-    This document describes version 0.024 of MooseX::AttributeShortcuts -
-    released May 02, 2014 as part of MooseX-AttributeShortcuts.
+    This document describes version 0.025 of MooseX::AttributeShortcuts -
+    released May 22, 2014 as part of MooseX-AttributeShortcuts.
 
 SYNOPSIS
         package Some::Class;
@@ -251,6 +251,49 @@ NEW ATTRIBUTE OPTIONS
             ],
         );
 
+  handles => { foo => sub { ... }, ... }
+    Creating a delegation with a coderef will now create a new, "custom
+    accessor" for the attribute. These coderefs will be installed and called
+    as methods on the associated class (just as readers, writers, and other
+    accessors are), and will have the attribute metaclass available in $_.
+    Anything the accessor is called with it will have access to in @_, just
+    as you'd expect of a method.
+
+    e.g., the following example creates an attribute named 'bar' with a
+    standard reader accessor named 'bar' and two custom accessors named
+    'foo' and 'foo_too'.
+
+        has bar => (
+
+            is      => 'ro',
+            isa     => 'Int',
+            handles => {
+
+                foo => sub {
+                    my $self = shift @_;
+
+                    return $_->get_value($self) + 1;
+                },
+
+                foo_too => sub {
+                    my $self = shift @_;
+
+                    return $self->bar + 1;
+                },
+            },
+        );
+
+    ...and later,
+
+    Note that in this example both foo() and foo_too() do effectively the
+    same thing: return the attribute's current value plus 1. However, foo()
+    accesses the attribute value directly through the metaclass, the pros
+    and cons of which this author leaves as an exercise for the reader to
+    determine.
+
+    You may choose to use the installed accessors to get at the attribute's
+    value, or use the direct metaclass access, your choice.
+
 ANONYMOUS SUBTYPING AND COERCION
         "Abusus non tollit usum."
 
@@ -290,19 +333,19 @@ BUGS
 AUTHOR
     Chris Weyl <cweyl@alumni.drew.edu>
 
-  SAYING THANKS IN A MATERIALISTIC WAY
+  I'm a material boy in a material world
     Please note I do not expect to be gittip'ed or flattr'ed for this work,
     rather it is simply a very pleasant surprise. I largely create and
     release works like this because I need them or I find it enjoyable;
-    however, don't let that stop you giving me money if you feel like it ;)
+    however, don't let that stop you if you feel like it ;)
 
-    flattr this!
+    Flattr this
     <https://flattr.com/submit/auto?user_id=RsrchBoy&url=https%3A%2F%2Fgithu
     b.com%2FRsrchBoy%2Fmoosex-attributeshortcuts&title=RsrchBoy's%20CPAN%20M
     ooseX-AttributeShortcuts&tags=%22RsrchBoy's%20MooseX-AttributeShortcuts%
-    20in%20the%20CPAN%22> gittip me! <https://www.gittip.com/RsrchBoy/>
-    Amazon Wishlist
-    <http://www.amazon.com/gp/registry/wishlist/3G2DQFPBA57L6>
+    20in%20the%20CPAN%22>, gittip me <https://www.gittip.com/RsrchBoy/>, or
+    indulge my Amazon Wishlist <http://bit.ly/rsrchboys-wishlist>... If you
+    so desire.
 
 CONTRIBUTOR
     David Steinbrunner <dsteinbrunner@pobox.com>

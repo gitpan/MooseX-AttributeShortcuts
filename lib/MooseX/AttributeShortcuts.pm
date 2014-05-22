@@ -11,8 +11,8 @@ package MooseX::AttributeShortcuts;
 BEGIN {
   $MooseX::AttributeShortcuts::AUTHORITY = 'cpan:RSRCHBOY';
 }
-# git description: 0.023-5-gff63e05
-$MooseX::AttributeShortcuts::VERSION = '0.024';
+# git description: 0.024-8-g8de35d9
+$MooseX::AttributeShortcuts::VERSION = '0.025'; # TRIAL
 
 # ABSTRACT: Shorthand for common attribute options
 
@@ -31,8 +31,8 @@ use Moose::Util::TypeConstraints;
 BEGIN {
   $MooseX::AttributeShortcuts::Trait::Attribute::AUTHORITY = 'cpan:RSRCHBOY';
 }
-# git description: 0.023-5-gff63e05
-$MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.024';
+# git description: 0.024-8-g8de35d9
+$MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.025'; # TRIAL
     use namespace::autoclean;
     use MooseX::Role::Parameterized;
     use Moose::Util::TypeConstraints  ':all';
@@ -45,6 +45,7 @@ $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.024';
 
     use Package::DeprecationManager -deprecations => {
         'undocumented-isa-constraints' => '0.23',
+        'hashref-given-to-coerce'      => '0.24',
     };
 
     sub _acquire_isa_tc { goto \&Moose::Util::TypeConstraints::find_or_create_isa_type_constraint }
@@ -103,12 +104,14 @@ $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.024';
 
             if ($options->{is}) {
 
+                # handle: is => 'rwp'
                 if ($options->{is} eq 'rwp') {
 
                     $options->{is}     = 'ro';
                     $options->{writer} = "$wprefix$name";
                 }
 
+                # handle: is => 'lazy'
                 if ($options->{is} eq 'lazy') {
 
                     $options->{is}       = 'ro';
@@ -170,9 +173,15 @@ $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.024';
             }
 
             # "fix" the case of the hashref....  *sigh*
-            # FIXME TODO check for potential conflicts and warn!
-            $options->{coerce} = [ %{ $options->{coerce} } ]
-                if $_ref->('coerce') eq 'HASH';
+            if ($_ref->('coerce') eq 'HASH') {
+
+                deprecated(
+                    feature => 'hashref-given-to-coerce',
+                    message => 'Passing a hashref to coerce is unsafe, and will be removed on or after 01 Jan 2015',
+                );
+
+                $options->{coerce} = [ %{ $options->{coerce} } ];
+            }
 
             if ($_ref->('coerce') eq 'ARRAY') {
 
@@ -291,6 +300,36 @@ $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.024';
             $class->add_method($self->builder => $self->anon_builder);
             return;
         };
+
+        method mi               => sub { shift->associated_class->get_meta_instance                     };
+        method weaken_value     => sub { $_[0]->mi->weaken_slot_value($_[1] => $_) for $_[0]->slots     };
+        method strengthen_value => sub { $_[0]->mi->strengthen_slot_value($_[1] => $_) for $_[0]->slots };
+
+        # NOTE: remove_delegation() will also automagically remove any custom
+        # accessors we create here
+
+        around _make_delegation_method => sub {
+            my ($orig, $self) = (shift, shift);
+            my ($name, $coderef) = @_;
+
+            ### _make_delegation_method() called with a: ref $coderef
+            return $self->$orig(@_)
+                unless 'CODE' eq ref $coderef;
+
+            # this coderef will be installed as a method on the associated class itself.
+            my $custom_coderef = sub {
+                # aka $self from the class instance's perspective
+                my $associated_class_instance = shift @_;
+
+                # in $coderef, $_ will be the attribute metaclass
+                local $_ = $self;
+                return $associated_class_instance->$coderef(@_);
+            };
+
+            return $self->_process_accessors(custom => { $name => $custom_coderef });
+        };
+
+        return;
     };
 }
 
@@ -373,7 +412,7 @@ MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 =head1 VERSION
 
-This document describes version 0.024 of MooseX::AttributeShortcuts - released May 02, 2014 as part of MooseX-AttributeShortcuts.
+This document describes version 0.025 of MooseX::AttributeShortcuts - released May 22, 2014 as part of MooseX-AttributeShortcuts.
 
 =head1 SYNOPSIS
 
@@ -641,6 +680,48 @@ coderefs that will coerce a given type to our type.
         ],
     );
 
+=head2 handles => { foo => sub { ... }, ... }
+
+Creating a delegation with a coderef will now create a new, "custom accessor"
+for the attribute.  These coderefs will be installed and called as methods on
+the associated class (just as readers, writers, and other accessors are), and
+will have the attribute metaclass available in $_.  Anything the accessor
+is called with it will have access to in @_, just as you'd expect of a method.
+
+e.g., the following example creates an attribute named 'bar' with a standard
+reader accessor named 'bar' and two custom accessors named 'foo' and
+'foo_too'.
+
+    has bar => (
+
+        is      => 'ro',
+        isa     => 'Int',
+        handles => {
+
+            foo => sub {
+                my $self = shift @_;
+
+                return $_->get_value($self) + 1;
+            },
+
+            foo_too => sub {
+                my $self = shift @_;
+
+                return $self->bar + 1;
+            },
+        },
+    );
+
+...and later,
+
+Note that in this example both foo() and foo_too() do effectively the same
+thing: return the attribute's current value plus 1.  However, foo() accesses
+the attribute value directly through the metaclass, the pros and cons of
+which this author leaves as an exercise for the reader to determine.
+
+You may choose to use the installed accessors to get at the attribute's value,
+or use the direct metaclass access, your choice.
+
 =head1 ANONYMOUS SUBTYPING AND COERCION
 
     "Abusus non tollit usum."
@@ -688,16 +769,24 @@ feature.
 
 Chris Weyl <cweyl@alumni.drew.edu>
 
-=head2 SAYING THANKS IN A MATERIALISTIC WAY
+=head2 I'm a material boy in a material world
+
+=begin html
+
+<a href="https://www.gittip.com/RsrchBoy/"><img src="https://raw.githubusercontent.com/gittip/www.gittip.com/master/www/assets/%25version/logo.png" /></a>
+<a href="http://bit.ly/rsrchboys-wishlist"><img src="http://wps.io/wp-content/uploads/2014/05/amazon_wishlist.resized.png" /></a>
+<a href="https://flattr.com/submit/auto?user_id=RsrchBoy&url=https%3A%2F%2Fgithub.com%2FRsrchBoy%2Fmoosex-attributeshortcuts&title=RsrchBoy's%20CPAN%20MooseX-AttributeShortcuts&tags=%22RsrchBoy's%20MooseX-AttributeShortcuts%20in%20the%20CPAN%22"><img src="http://api.flattr.com/button/flattr-badge-large.png" /></a>
+
+=end html
 
 Please note B<I do not expect to be gittip'ed or flattr'ed for this work>,
 rather B<it is simply a very pleasant surprise>. I largely create and release
 works like this because I need them or I find it enjoyable; however, don't let
-that stop you giving me money if you feel like it ;)
+that stop you if you feel like it ;)
 
-L<flattr this!|https://flattr.com/submit/auto?user_id=RsrchBoy&url=https%3A%2F%2Fgithub.com%2FRsrchBoy%2Fmoosex-attributeshortcuts&title=RsrchBoy's%20CPAN%20MooseX-AttributeShortcuts&tags=%22RsrchBoy's%20MooseX-AttributeShortcuts%20in%20the%20CPAN%22>
-L<gittip me!|https://www.gittip.com/RsrchBoy/>
-L<Amazon Wishlist|http://www.amazon.com/gp/registry/wishlist/3G2DQFPBA57L6>
+L<Flattr this|https://flattr.com/submit/auto?user_id=RsrchBoy&url=https%3A%2F%2Fgithub.com%2FRsrchBoy%2Fmoosex-attributeshortcuts&title=RsrchBoy's%20CPAN%20MooseX-AttributeShortcuts&tags=%22RsrchBoy's%20MooseX-AttributeShortcuts%20in%20the%20CPAN%22>,
+L<gittip me|https://www.gittip.com/RsrchBoy/>, or indulge my
+L<Amazon Wishlist|http://bit.ly/rsrchboys-wishlist>...  If you so desire.
 
 =head1 CONTRIBUTOR
 

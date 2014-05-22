@@ -65,6 +65,7 @@ eval { $v .= pmver('MooseX::Types::Moose','any version') };
 eval { $v .= pmver('MooseX::Types::Path::Class','any version') };
 eval { $v .= pmver('Package::DeprecationManager','any version') };
 eval { $v .= pmver('Path::Class','any version') };
+eval { $v .= pmver('Smart::Comments','any version') };
 eval { $v .= pmver('Test::CheckDeps','0.010') };
 eval { $v .= pmver('Test::Fatal','any version') };
 eval { $v .= pmver('Test::Moose','any version') };
