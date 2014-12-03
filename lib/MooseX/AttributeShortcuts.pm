@@ -8,11 +8,9 @@
 #   The GNU Lesser General Public License, Version 2.1, February 1999
 #
 package MooseX::AttributeShortcuts;
-BEGIN {
-  $MooseX::AttributeShortcuts::AUTHORITY = 'cpan:RSRCHBOY';
-}
-# git description: 0.024-8-g8de35d9
-$MooseX::AttributeShortcuts::VERSION = '0.025'; # TRIAL
+our $AUTHORITY = 'cpan:RSRCHBOY';
+# git description: 0.025-1-gaeff45b
+$MooseX::AttributeShortcuts::VERSION = '0.026'; # TRIAL
 
 # ABSTRACT: Shorthand for common attribute options
 
@@ -28,11 +26,9 @@ use Moose::Util::TypeConstraints;
 
 {
     package MooseX::AttributeShortcuts::Trait::Attribute;
-BEGIN {
-  $MooseX::AttributeShortcuts::Trait::Attribute::AUTHORITY = 'cpan:RSRCHBOY';
-}
-# git description: 0.024-8-g8de35d9
-$MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.025'; # TRIAL
+our $AUTHORITY = 'cpan:RSRCHBOY';
+# git description: 0.025-1-gaeff45b
+$MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.026'; # TRIAL
     use namespace::autoclean;
     use MooseX::Role::Parameterized;
     use Moose::Util::TypeConstraints  ':all';
@@ -401,8 +397,8 @@ __END__
 
 =encoding UTF-8
 
-=for :stopwords Chris Weyl David Steinbrunner GitHub attribute's isa one's rwp SUBTYPING
-foo
+=for :stopwords Chris Weyl David Graham Knop Steinbrunner GitHub attribute's isa one's rwp
+SUBTYPING foo
 
 =for :stopwords Wishlist flattr flattr'ed gittip gittip'ed
 
@@ -412,7 +408,7 @@ MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 =head1 VERSION
 
-This document describes version 0.025 of MooseX::AttributeShortcuts - released May 22, 2014 as part of MooseX-AttributeShortcuts.
+This document describes version 0.026 of MooseX::AttributeShortcuts - released December 02, 2014 as part of MooseX-AttributeShortcuts.
 
 =head1 SYNOPSIS
 
@@ -788,9 +784,21 @@ L<Flattr this|https://flattr.com/submit/auto?user_id=RsrchBoy&url=https%3A%2F%2F
 L<gittip me|https://www.gittip.com/RsrchBoy/>, or indulge my
 L<Amazon Wishlist|http://bit.ly/rsrchboys-wishlist>...  If you so desire.
 
-=head1 CONTRIBUTOR
+=head1 CONTRIBUTORS
+
+=for stopwords David Steinbrunner Graham Knop
+
+=over 4
+
+=item *
 
 David Steinbrunner <dsteinbrunner@pobox.com>
+
+=item *
+
+Graham Knop <haarg@haarg.org>
+
+=back
 
 =head1 COPYRIGHT AND LICENSE
 

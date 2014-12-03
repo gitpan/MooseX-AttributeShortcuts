@@ -15,19 +15,19 @@ not run its Makefile.PL or Build.PL.
 Hash: SHA1
 
 SHA1 55ac697642a18dd7d974736a3d06fd531aa82382 .travis.yml
-SHA1 8946bb1a0c5fb6f9ffcf6b87b050a34874539e04 Changes
+SHA1 ce8aee1dea5bbb7ae4ec28e1e8fc8756fffcfd53 Changes
 SHA1 62c6886b1f14e9e9a39f6bf00f5490057d3c2885 LICENSE
-SHA1 1c9e7312eaed49d79022c1cda5c034dca01c704d MANIFEST
-SHA1 9462166a34cdd19d11bbeb75e2aa782aa04880b6 META.json
-SHA1 3873345d552bae7a76a1e45b959bf9d20840a32c META.yml
-SHA1 ae2c6b0157f7126685b6adddc48c5098b0a2c14e Makefile.PL
-SHA1 8bc77928c9bdef1b9023a6bb70d614655a90c315 README
-SHA1 d3fe192218232cf2fee63d644000782c2c001c0e cpanfile
+SHA1 9e93b7c170f08934da9401d2bf1a10a4cbfe033d MANIFEST
+SHA1 14a5ee205955c29b6b6c2c11d9b9b62bf889f5ec META.json
+SHA1 891498aee75000c1bf38c908a29a874abb10123b META.yml
+SHA1 577227c434764407a66e1cb9384610cd1df44bfb Makefile.PL
+SHA1 33cc0733177743a55d14960372b2c9f704c26679 README
+SHA1 9f803adbdea8bf7a39eed3b4b2519f9353eb7dff cpanfile
 SHA1 5dafee4fc2c3642d0de8db57ec01d89d67fa5979 dist.ini
-SHA1 cbd91d5c34febf1fa298c243aa1034196dfa545a lib/MooseX/AttributeShortcuts.pm
+SHA1 23f39eaa7dcc653459ac00f699b9ee427c21d9c1 lib/MooseX/AttributeShortcuts.pm
 SHA1 c522c3928158e64bd97d34d20cbfe0b5305a7eb2 t/00-check-deps.t
-SHA1 182ee5b9c40cf9fd1944b3568453bf796584ad12 t/00-compile.t
-SHA1 b3b2e42e252bd818556556552fc29f8a35bcb71d t/000-report-versions-tiny.t
+SHA1 9cc17cd54fa557710a3e0964b2d49654dd35b7b2 t/00-compile.t
+SHA1 3d37125a7c81f94ce7ff7c2dee23f4527697ae05 t/000-report-versions-tiny.t
 SHA1 b201b29194c8e2d174032993fbf9b989d204943c t/01-basic.t
 SHA1 feb9ac405e94777b2eccb564c75e81b303877592 t/02-parameterized.t
 SHA1 8b3de3014b22392c176c297ec6169376b4c7d080 t/03-lazy.t
@@ -39,31 +39,37 @@ SHA1 2983277e0687e4cf8119b46779afb8b11b3d6329 t/anon-builder.t
 SHA1 cdb770dcc3e7834ebfef966b99b65696b4bebfe9 t/constraint.t
 SHA1 d7713ee1fd02d36e9a6a1ec196664e0badddafa6 t/deprecated/inline_typing.t
 SHA1 0693757ec019aebd05fc427a757294136889cf74 t/funcs.pm
-SHA1 2b821c0a5e828a6151ae46278a19894d4db1503b t/handles-coderef.t
+SHA1 6704194966b41752902fe8fc984cd7f5c4fe3153 t/handles-coderef.t
 SHA1 2a3a2473622b9bd48532a52cfb1aafe72a0d34af t/handles-metaclass.t
 SHA1 e47d5df31a76798e7db5a7d776330cf8ca4e43f9 t/inline_coercion-back-compat.t
 SHA1 78aee97e4cb5687712f41fae37fd800cd1fe3ac7 t/inline_coercion.t
 SHA1 efa514912dc489236506a5a9aca8414a6b661e52 t/inline_subtyping.t
 SHA1 2b9133942088af2b4b6926c65d7b2da8beb1f2b6 t/inline_subtyping_with_coercion.t
 SHA1 801cfa02cf426ab31f6b1f9465cbc89d78822743 t/isa_instance_of.t
-SHA1 55a54063e99326e697f303f5df808a2500651cb7 xt/author/pod-spell.t
+SHA1 f09e96f46ac2364307142838d68b4f1953b5919d xt/author/eol.t
+SHA1 8e2ce90c58b3dff81137fae3649615760d971b9e xt/author/no-tabs.t
+SHA1 36733582be7dbdcfce28e2a471e6ae82f50ee837 xt/author/pod-spell.t
 SHA1 a7948d34cfaad400286ea5d5fa6206c4c7e2552c xt/release/consistent-version.t
-SHA1 b3915eaac65e18e6a048b34a4b873beccab326b4 xt/release/eol.t
 SHA1 cd1efd4a6edcf18422a226628e6c7a87f2ffb7df xt/release/has-version.t
 SHA1 6b9989c3e0d0e9348ab8e83a25912816be52efc0 xt/release/minimum-version.t
-SHA1 4d54f55f6d47c12d114e576d6e006f1e25924f4d xt/release/no-smart-comments.t
-SHA1 1d2fc09e0ec5b9419a473c4f82010071dc9a860d xt/release/no-tabs.t
+SHA1 73ebc5cc0cb99fa55a82472d63cc09edbb61c96d xt/release/no-smart-comments.t
 SHA1 9ff2bd29987b01440cfe648807df8cdbeedc289c xt/release/pod-coverage.t
 SHA1 1e6adb7e320c9a83e7e5ed59fbe4080e1d029256 xt/release/pod-linkcheck.t
 SHA1 a0c20421984c072fd1701d1639592f2d7c4ff226 xt/release/pod-syntax.t
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iQEcBAEBAgAGBQJTflVEAAoJEOd5N1CvIgQkMLQH+wUL6+m9KTYH7dC5IhWTAH+E
-UkW/5ytHxPW6uVBZrEb7WT/C6ptIdDXfthPIDltXitwnBg/zuUWik2kQeyo9Lzne
-HGi07DuOUPjY727AWnSbwtyaebTOi6hbtPkAEqWePTLkkoxxux7mq9TDsS7y9sjm
-L6NOtTLWJP+9odgscmicxoOvhL1K3it74dcZ2vOUX+FwLdOxumXT++nrK0KY+/hC
-NsUwQh4d+XY4DL6KumJUCaG9gEOzBiXjiu55OL1pr5Q/JQBB+Jt0d0NxEQfHknqx
-naqYD3LW2+xd0+0pJHb8Eu2NzijgUmrqsB9mi5nJSTg35AhzM2gWUgMdk5vVRAQ=
-=XFxe
+iQIcBAEBAgAGBQJUfokhAAoJEJ/Rlq0N/NXWav8QAIbBHQzRr2Cx0UvpcrkPLn8y
+cCyo3vZvwWfxcoX9ABOf97feuoArujSmVip7Zr1wazdAEKf3h+aTNV2jmnZPm+ee
+o0S5g5qVYF7nMCYIM10acvvgqvp7rSn1BMpz9RPzV/k/rBEOGwzWMWKC5me2jO1d
+LQIh32AbLJHrZCRE4tgdHYZ/bOkKLzfh8k+q7ANQAYsgkdraD/fG/6LDi4hXXmLY
+0KB9OCZWC5xgmiNNEBN4v+aTGoWgPYSLkKvRqMALj4J9TsPdbGWzU1D4E+pHJ4Ze
+pUSxEE5wCUetMQB+ZM+Vrc7HU81RSWJws7LX+qSdtRw172ihZAsvHtCpbluWX+dt
+4s2nvjg2E4QrKniiUqjov4Bu9kCw+wu7ohMRSCJXe1S/jrHJrq73YcCqG5PIkzc3
+b1s5HvelAlwBLaQZiAtPr3UIDWUr0/McOfzOoesixdZXyy8K8rC893eM5apCMLto
+rNV0w7qQo8h5fhej+9ryRFXPzx7ZCTjQfw2gh/5nUeLS3J/bOPoIS9xqQCh2tdjq
+nE2vIOzwNpidboSLUh2ygsoALGbczghnclpc1EllBXAtfSJ3R1TZAK5qjPZBxuVt
+JeM1Fu/HsxGIP0kPUGxWuDtK/GNFLcdX2lnaZx5ksf3eRunHQxMlNrDw3S6IH2WL
+VByMOcoy68rbj14f3awD
+=fnJ3
 -----END PGP SIGNATURE-----

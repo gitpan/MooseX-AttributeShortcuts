@@ -2,8 +2,8 @@ NAME
     MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 VERSION
-    This document describes version 0.025 of MooseX::AttributeShortcuts -
-    released May 22, 2014 as part of MooseX-AttributeShortcuts.
+    This document describes version 0.026 of MooseX::AttributeShortcuts -
+    released December 02, 2014 as part of MooseX-AttributeShortcuts.
 
 SYNOPSIS
         package Some::Class;
@@ -347,8 +347,10 @@ AUTHOR
     indulge my Amazon Wishlist <http://bit.ly/rsrchboys-wishlist>... If you
     so desire.
 
-CONTRIBUTOR
-    David Steinbrunner <dsteinbrunner@pobox.com>
+CONTRIBUTORS
+    *   David Steinbrunner <dsteinbrunner@pobox.com>
+
+    *   Graham Knop <haarg@haarg.org>
 
 COPYRIGHT AND LICENSE
     This software is Copyright (c) 2011 by Chris Weyl.
